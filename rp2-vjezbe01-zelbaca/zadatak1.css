@@ -1,0 +1,47 @@
+.naslov {
+    background-color: rgb(235, 235, 235);
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 5px;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-bottom-color: rgb(150, 150, 150);
+    border-top-color: rgb(196, 195, 195);
+    border-width: 2px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+form {
+    display: table;
+    margin-top: 10px;
+}
+
+p {
+    display: table-row;
+    vertical-align: text-top;
+}
+
+label {
+    display: table-cell;
+}
+
+.col2 {
+    display: table-cell;
+    margin-left: 50px;
+}
+
+.submit-container {
+    display: block;
+    text-align: right;
+    background-color: rgb(235, 235, 235);
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top-style: solid;
+    border-top-color: rgb(150, 150, 150);
+    border-width: 2px;
+    font-weight: bold;
+}
+
+

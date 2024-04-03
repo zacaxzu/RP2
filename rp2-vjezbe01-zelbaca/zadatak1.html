@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zadatak 1</title>
+    <link rel="stylesheet" type="text/css" href="zadatak1-sama.css" />
+  </head>
+  <body>
+    <div class="naslov">Testform</div>
+    <form action="processForm.php" method="get">
+      <p>
+        <label class="col1" for="name">Name:</label>
+        <input class="col2" id="name" name="name" type="text" />
+      </p>
+
+      <p>
+        <label class="col1" for="lozinka">Password:</label>
+        <input class="col2" id="lozinka" name="lozinka" type="password" />
+      </p>
+
+      <p>
+        <label class="col1" for="gender">Gender:</label>
+        <input class="col2" type="radio" id="male" name="gender" value="Male" />
+        Male
+        <br />
+        <input
+          class="col2"
+          type="radio"
+          id="female"
+          name="gender"
+          value="Female"
+        />
+        Female
+      </p>
+
+      <p>
+        <label class="col1" for="kontinenti">Kontinenti:</label>
+        <select class="col2" name="kontinenti">
+          <option value="Europa" selected>Europa</option>
+          <option value="S. Amerika">S. Amerika</option>
+          <option value="J. Amerika">J. Amerika</option>
+          <option value="Antarktik">Antarktik</option>
+          <option value="Afrika">Afrika</option>
+          <option value="Australija">Australija</option>
+          <option value="Azija">Azija</option>
+        </select>
+      </p>
+
+      <p>
+        <label class="col1" for="meals">Meals:</label>
+        <input class="col2" type="checkbox" name="meals" id="Breakfast" />
+        Breakfast
+        <br />
+        <input class="col2" type="checkbox" name="meals" id="Lunch" />
+        Lunch
+        <br />
+        <input class="col2" type="checkbox" name="meals" id="Dinner" />
+        Dinner
+      </p>
+
+      <p>
+        <label class="remark" for="remark">Remark</label>
+        <textarea
+          class="col2"
+          name="textarea"
+          id=""
+          cols="40"
+          rows="5"
+        ></textarea>
+      </p>
+    </form>
+
+    <p class="submit-container">
+      <button name="send" type="submit" id="send" value="Send">Send</button>
+      <button name="cancel" type="reset" id="cancel" value="Reset">
+        Cancel
+      </button>
+    </p>
+  </body>
+</html>
