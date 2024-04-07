@@ -38,6 +38,7 @@ td {
 
 .dodani_brojevi {
     text-align: center;
+    color: blue;
 }
 
 .vertikalna_linija {
@@ -46,5 +47,4 @@ td {
 
 .horizontalna_linija {
     border-bottom: 2px solid black;
-    background-color: aqua;
 }

@@ -19,95 +19,81 @@
     array(null, 2, 1, null, null, null),
     array(null, null, null, 5, null, null),
   );
+  
+  function inicijalizacija( &$polje_2, &$polje)
+  {
+    $polje_2 = $polje;
+  }
 
   function dodaj_broj(&$polje_2, $broj, $redak, $stupac)
   {
     $polje_2[$redak][$stupac] = $broj;
   }
 
-  $polje_2 = $polje;
+/*
   dodaj_broj($polje_2, 1, 1, 0);
-  /*
-  <table id="grid">
-    <tr>
-      <td class="cell"></td>
-      <td class="cell"></td>
-      <td class="cell-3"><strong>4</strong></td>
-      <td class="cell"></td>
-      <td class="cell"></td>
-      <td class="cell"><strong>3</strong></td>
-    </tr>
-    <tr>
-      <td class="cell"></td>
-      <td class="cell"></td>
-      <td class="cell-9"><strong>5</strong></td>
-      <td class="cell"><strong>2</strong></td>
-      <td class="cell"><strong>3</strong></td>
-      <td class="cell"></td>
-    </tr>
-    <tr class="middle_line">
-      <td class="cell"><strong>3</strong></td>
-      <td class="cell"></td>
-      <td class="cell-15"><strong>2</strong></td>
-      <td class="cell"></td>
-      <td class="cell"><strong>6</strong></td>
-      <td class="cell"></td>
-    </tr>
-    <tr>
-      <td class="cell"></td>
-      <td class="cell"><strong>6</strong></td>
-      <td class="cell-21"></td>
-      <td class="cell"></td>
-      <td class="cell"></td>
-      <td class="cell"><strong>2</strong></td>
-    </tr>
-    <tr>
-      <td class="cell"></td>
-      <td class="cell"><strong>2</strong></td>
-      <td class="cell-27"><strong>1</strong></td>
-      <td class="cell"></td>
-      <td class="cell"></td>
-      <td class="cell"></td>
-    </tr>
-    <tr>
-      <td class="cell"></td>
-      <td class="cell"></td>
-      <td class="cell-33"></td>
-      <td class="cell"><strong>5</strong></td>
-      <td class="cell"></td>
-      <td class="cell"></td>
-    </tr>
-  </table>
-  */
+  dodaj_broj($polje_2, 2, 0, 0);
+
+*/
   ?>
-  <table>
-    <?php
+
+
+<table>
+  <?php
+  function ispis_tablice($polje_2, $polje){
+    echo '<table>';
     for ($i = 0; $i < 6; $i++) {
       echo "<tr>";
       for ($j = 0; $j < 6; $j++) {
         if ($j === 5 && $polje[$i][$j] != null) {
-          echo "<th class='zadani_brojevi'>" . $polje_2[$i][$j] . "</th>";
+          if ($i === 1 || $i === 3) {
+            echo "<th class='zadani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</th>";
+          } else {
+            echo "<th class='zadani_brojevi'>" . $polje_2[$i][$j] . "</th>";
+          }
         } else if ($polje[$i][$j] != null) {
           if ($j === 2) {
-            echo "<td class='zadani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            if ($i === 1 || $i === 3) {
+              echo "<td class='zadani_brojevi vertikalna_linija horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            } else {
+              echo "<td class='zadani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            }
           } else {
-            echo "<td class='zadani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+            if ($i === 1 || $i === 3) {
+              echo "<td class='zadani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            } else {
+              echo "<td class='zadani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+            }
           }
         } else if ($j === 5 && $polje[$i][$j] === null) {
-          echo "<th class='dodani_brojevi'>" . $polje_2[$i][$j] . "</th>";
+          if ($i === 1 || $i === 3) {
+            echo "<th class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</th>";
+          } else {
+            echo "<th class='dodani_brojevi'>" . $polje_2[$i][$j] . "</th>";
+          }
         } else if ($polje[$i][$j] === null) {
           if ($j === 2) {
-            echo "<td class='zadani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            if ($i === 1 || $i === 3) {
+              echo "<td class='dodani_brojevi horizontalna_linija vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            } else {
+              echo "<td class='dodani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            }
           } else {
-            echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+            if ($i === 1 || $i === 3) {
+              echo "<td class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
+            } else {
+              echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+            }
           }
         }
       }
       echo "</tr>";
     }
+    echo '</table>';
+  }
     ?>
   </table>
-
+  <br>
 
   <br />
 </body>
