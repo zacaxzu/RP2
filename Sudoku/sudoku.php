@@ -10,10 +10,7 @@ Broj pokušaja:
 <?php
 include('ispis_sudokua.php');
 include('odabir_poteza.html');
-?>
 
-<br>
-<?php
 if (isset($_POST['odabir_poteza'])) {
     $potezType = $_POST['odabir_poteza'];
     echo $potezType;
@@ -21,9 +18,9 @@ if (isset($_POST['odabir_poteza'])) {
         echo '<br>' . 'Kliknut unesi_broj' . '<br>';
         $broj = $_POST['upisan_broj'];
         echo 'Upisan broj je: ' . $broj . '<br>';
-        $broj_retka = $_POST['broj_retka'];
+        $broj_retka = $_POST['broj_retka'] - 1;
         echo 'broj_retka: ' . $broj_retka . '<br>';
-        $broj_stupca = $_POST['broj_stupca'];
+        $broj_stupca = $_POST['broj_stupca'] - 1;
         echo 'broj_stupca: ' . $broj_stupca . '<br>';
 
         $polje[$broj_retka][$broj_stupca] = $broj;
@@ -34,5 +31,8 @@ if (isset($_POST['odabir_poteza'])) {
         echo 'Kliknut reset_igre';
     }
 }
+
+
+
 ?>
 <br>

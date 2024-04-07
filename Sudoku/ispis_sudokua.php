@@ -12,14 +12,21 @@
   <br />
   <?php
   $polje = array(
-    array(" ", " ", 4, " ", " ", 3),
-    array(" ", " ", 5, " ", " ", " "),
-    array(3, " ", 2, " ", 6, " "),
-    array(" ", 6, " ", " ", " ", 2),
-    array(" ", 2, 1, " ", " ", " "),
-    array(" ", " ", " ", 5, " ", " "),
+    array(null, null, 4, null, null, 3),
+    array(null, null, 5, null, null, null),
+    array(3, null, 2, null, 6, null),
+    array(null, 6, null, null, null, 2),
+    array(null, 2, 1, null, null, null),
+    array(null, null, null, 5, null, null),
   );
 
+  function dodaj_broj(&$polje_2, $broj, $redak, $stupac)
+  {
+    $polje_2[$redak][$stupac] = $broj;
+  }
+
+  $polje_2 = $polje;
+  dodaj_broj($polje_2, 1, 1, 0);
   /*
   <table id="grid">
     <tr>
@@ -78,10 +85,22 @@
     for ($i = 0; $i < 6; $i++) {
       echo "<tr>";
       for ($j = 0; $j < 6; $j++) {
-        if ($j === 5) {
-          echo "<th class='zadani_brojevi'>" . $polje[$i][$j] . "</th>";
-        } else {
-          echo "<td class='zadani_brojevi'>" . $polje[$i][$j] . "</td>";
+        if ($j === 5 && $polje[$i][$j] != null) {
+          echo "<th class='zadani_brojevi'>" . $polje_2[$i][$j] . "</th>";
+        } else if ($polje[$i][$j] != null) {
+          if ($j === 2) {
+            echo "<td class='zadani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+          } else {
+            echo "<td class='zadani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+          }
+        } else if ($j === 5 && $polje[$i][$j] === null) {
+          echo "<th class='dodani_brojevi'>" . $polje_2[$i][$j] . "</th>";
+        } else if ($polje[$i][$j] === null) {
+          if ($j === 2) {
+            echo "<td class='zadani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
+          } else {
+            echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+          }
         }
       }
       echo "</tr>";
