@@ -14,25 +14,40 @@ include('ispis_sudokua.php');
 if (!isset($_SESSION['polje_2'])) {
     inicijalizacija($_SESSION['polje_2'], $polje);
 }
-ispis_tablice($polje, $polje);
+//ispis_tablice($polje, $polje);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['odabir_poteza'])) {
         $potezType = $_POST['odabir_poteza'];
         echo $potezType;
         if ($potezType === 'unesi_broj') {
-            echo '<br>' . 'Kliknut unesi_broj' . '<br>';
+            //echo '<br>' . 'Kliknut unesi_broj' . '<br>';
             $broj = $_POST['upisan_broj'];
-            echo 'Upisan broj je: ' . $broj . '<br>';
+            //echo 'Upisan broj je: ' . $broj . '<br>';
             $broj_retka = $_POST['broj_retka'] - 1;
-            echo 'broj_retka: ' . $broj_retka . '<br>';
+            //echo 'broj_retka: ' . $broj_retka . '<br>';
             $broj_stupca = $_POST['broj_stupca'] - 1;
-            echo 'broj_stupca: ' . $broj_stupca . '<br>';
-
-            dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
-        } else if ($potezType === 'obrisi_broj') {
+            //echo 'broj_stupca: ' . $broj_stupca . '<br>';
+            //echo 'Validan potez return: ' . validan_potez($_SESSION['polje_2']);
+            if(validan_potez($_SESSION['polje_2'])){
+                dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
+            }
+            else{
+                echo 'Potez nije validan!';
+            }
+            
+        } 
+        else if ($potezType === 'obrisi_broj') {
             echo 'Kliknut obrisi_broj';
-        } else if ($potezType === 'reset_igre') {
+            $broj_retka = $_POST['redak_obrisi'] - 1;
+            //echo 'broj_retka: ' . $broj_retka . '<br>';
+            $broj_stupca = $_POST['stupac_obrisi'] - 1;
+            //echo 'broj_stupca: ' . $broj_stupca . '<br>';
+            if($polje[$broj_retka][$broj_stupca] == null){
+                obrisi_broj($_SESSION['polje_2'], $polje, $broj_retka, $broj_stupca);
+            }
+        } 
+        else if ($potezType === 'reset_igre') {
             echo 'Kliknut reset_igre';
             unset($_SESSION['polje_2']);
             inicijalizacija($_SESSION['polje_2'], $polje);
