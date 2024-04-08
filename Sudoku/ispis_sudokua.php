@@ -27,6 +27,7 @@
 
   function dodaj_broj(&$polje_2, $broj, $redak, $stupac)
   {
+    
     $polje_2[$redak][$stupac] = $broj;
   }
 

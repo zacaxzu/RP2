@@ -40,7 +40,14 @@ td {
 
 .dodani_brojevi {
     text-align: center;
+    font-weight: lighter;
     color: blue;
+}
+
+.nevalidni_dodani_brojevi {
+    text-align: center;
+    font-weight: lighter;
+    color: red;
 }
 
 .vertikalna_linija {

@@ -21,13 +21,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $potezType = $_POST['odabir_poteza'];
         echo $potezType;
         if ($potezType === 'unesi_broj') {
-            //echo '<br>' . 'Kliknut unesi_broj' . '<br>';
-            $broj = $_POST['upisan_broj'];
             //echo 'Upisan broj je: ' . $broj . '<br>';
             $broj_retka = $_POST['broj_retka'] - 1;
             //echo 'broj_retka: ' . $broj_retka . '<br>';
             $broj_stupca = $_POST['broj_stupca'] - 1;
             //echo 'broj_stupca: ' . $broj_stupca . '<br>';
+            //echo '<br>' . 'Kliknut unesi_broj' . '<br>';
+            $broj = $_POST['upisan_broj'];
+            //provjera unosa
+            if (!preg_match('/^[0-6]$/', $broj)) {
+                echo 'Nije unesen broj!';
+                $polje_2 = $_SESSION['polje_2'];
+                $broj = $polje_2[$broj_retka][$broj_stupca];
+            } 
             //echo 'Validan potez return: ' . validan_potez($_SESSION['polje_2']);
             if(validan_potez($_SESSION['polje_2'])){
                 dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
