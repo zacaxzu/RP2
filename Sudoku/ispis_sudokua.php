@@ -42,11 +42,11 @@
           $broj_retka = $_POST['broj_retka'] - 1;
           $broj_stupca = $_POST['broj_stupca'] - 1;
           $validan = provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka);
-          $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
+          if($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
+          return $validan;
         }
       }
     }
-    return $validan;
   }
 
   function provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_redka)
@@ -191,7 +191,7 @@
             }
           } else if ($j === 5 && $polje[$i][$j] === null) {
             if ($i === 1 || $i === 3) {
-              echo "<th class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</th>";
+                echo "<th class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</th>";
             } else {
               echo "<th class='dodani_brojevi'>" . $polje_2[$i][$j] . "</th>";
             }
