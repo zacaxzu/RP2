@@ -7,10 +7,10 @@
   </head>
   <body>
     <h1>Sudoku 6×6!</h1>
-    <form method="post" action="sudoku.php">
+    <form action="sudoku.php" method="POST">
       Unesi svoje ime:
-      <input type="text" name="ime_igraca" />
-      <button type="submit">Započni igru!</button>
+      <input type="text" id="ime_igraca" name="ime_igraca" required/>
+      <button type="submit" value="Submit">Započni igru!</button>
     </form>
   </body>
 </html>

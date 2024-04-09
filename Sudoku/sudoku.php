@@ -1,14 +1,22 @@
 <h1>Sudoku 6×6!</h1>
-Igrač:
+
 <?php
-$ime_igraca = $_POST["ime_igraca"];
-echo $ime_igraca;
 ?>
 <br>
 Broj pokušaja:
 
 <?php
 session_start();
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){   
+    if(isset($_POST['ime_igraca'])){
+        $ime_igraca = $_POST["ime_igraca"];
+        echo 'Igrač: $ime_igraca';
+    }
+}
+    
+echo 'Igrač:' . $ime_igraca;
+
 include('ispis_sudokua.php');
 
 if (!isset($_SESSION['polje_2'])) {
@@ -31,16 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //provjera unosa
             if (!preg_match('/^[0-6]$/', $broj)) {
                 echo 'Nije unesen broj!';
-                $polje_2 = $_SESSION['polje_2'];
+                //$polje_2 = $_SESSION['polje_2'];
                 $broj = $polje_2[$broj_retka][$broj_stupca];
             } 
+            dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
             //echo 'Validan potez return: ' . validan_potez($_SESSION['polje_2']);
-            if(validan_potez($_SESSION['polje_2'])){
-                dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
-            }
-            else{
-                echo 'Potez nije validan!';
-            }
+            //if(validan_potez($_SESSION['polje_2'])){
+                //dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
+            //}
+            //else{
+            //    echo 'Potez nije validan!';
+            //}
             
         } 
         else if ($potezType === 'obrisi_broj') {
@@ -58,10 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_SESSION['polje_2']);
             inicijalizacija($_SESSION['polje_2'], $polje);
         }
+        ispis_tablice($_SESSION['polje_2'], $polje);
+        echo '<br>';
+        ispis_tablice_2($_SESSION['polje_2']);
     }
 }
 
-ispis_tablice($_SESSION['polje_2'], $polje);
 ?>
 <br>
 
