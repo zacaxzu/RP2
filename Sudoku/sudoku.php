@@ -21,6 +21,7 @@ include('ispis_sudokua.php');
 
 if (!isset($_SESSION['polje_2'])) {
     inicijalizacija($_SESSION['polje_2'], $polje);
+    inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
 }
 //ispis_tablice($polje, $polje);
 
@@ -39,10 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //provjera unosa
             if (!preg_match('/^[0-6]$/', $broj)) {
                 echo 'Nije unesen broj!';
-                //$polje_2 = $_SESSION['polje_2'];
+                $polje_2 = $_SESSION['polje_2'];
                 $broj = $polje_2[$broj_retka][$broj_stupca];
             } 
-            dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
+            if(validan_potez($_SESSION['polje_2'])){
+                echo 'Usao u validan_potez!<br>';
+                dodaj_broj($_SESSION['polje_3'], 1, $broj_retka, $broj_stupca);
+                dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
+            }
+            elseif(!validan_potez($_SESSION['polje_2'])){
+                dodaj_broj($_SESSION['polje_3'], 0, $broj_retka, $broj_stupca);
+                dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
+            }
             //echo 'Validan potez return: ' . validan_potez($_SESSION['polje_2']);
             //if(validan_potez($_SESSION['polje_2'])){
                 //dodaj_broj($_SESSION['polje_2'], $broj, $broj_retka, $broj_stupca);
@@ -65,11 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         else if ($potezType === 'reset_igre') {
             echo 'Kliknut reset_igre';
             unset($_SESSION['polje_2']);
+            unset($_SESSION['polje_3']);
             inicijalizacija($_SESSION['polje_2'], $polje);
+            inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
         }
-        ispis_tablice($_SESSION['polje_2'], $polje);
+        ispis_tablice($_SESSION['polje_2'], $polje, $_POST['broj_retka'] - 1, $_POST['broj_stupca'] - 1);
         echo '<br>';
         ispis_tablice_2($_SESSION['polje_2']);
+        echo '<br>';
+        ispis_tablice_2($_SESSION['polje_3']);
     }
 }
 

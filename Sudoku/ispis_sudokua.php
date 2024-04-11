@@ -25,6 +25,19 @@
     $polje_2 = $polje;
   }
 
+  function inicijalizacija_pomocnog_polja(&$polje_3, &$polje)
+  {
+  $polje_3 = $polje; // Initialize polje_3 with the same values as polje
+  for ($i = 0; $i < 6; $i++) {
+    for ($j = 0; $j < 6; $j++) {
+      if ($polje[$i][$j] !== null) {
+        $polje_3[$i][$j] = 2; // Set non-null values to 2 in polje_3
+      }
+    }
+  }
+  }
+
+
   function dodaj_broj(&$polje_2, $broj, $redak, $stupac)
   {
     $polje_2[$redak][$stupac] = $broj;
@@ -36,23 +49,39 @@
       if (isset($_POST['odabir_poteza'])) {
         $potezType = $_POST['odabir_poteza'];
         if ($potezType === 'unesi_broj') {
-          $validan = true;
+          $validan = 1;
           $broj = $_POST['upisan_broj'];
+          echo 'Upisan broj je: ' . $broj . '<br>';
           $broj_retka = $_POST['broj_retka'] - 1;
+          echo 'broj_retka: ' . $broj_retka . '<br>';
           $broj_stupca = $_POST['broj_stupca'] - 1;
+          echo 'broj_stupca: ' . $broj_stupca . '<br>';
           $validan = provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka);
+          echo '$validan: ' . $validan . '<br>';
           if($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
+          echo '$validan: ' . $validan . '<br>';
           return $validan;
         }
       }
     }
   }
 
+  function validan_potez_2(&$polje_21, $broj1, $broj_retka1, $broj_stupca1)
+  {
+    $polje_2 = $polje_21;
+    $broj = $broj1;
+    echo '$broj: ' . $broj;
+    $broj_stupca = $broj_stupca1;
+    $broj_retka = $broj_retka1;
+    $validan = true;
+    $validan = provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka);
+    if($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
+    return $validan;
+  }
+
   function provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka)
   {
     for ($i = 0; $i < 6; $i++) {
-      //var_dump($polje_2[$broj_redka][$i]);
-      //var_dump($broj);
       if (($polje_2[$broj_retka][$i] == $broj) && ($i !== $broj_stupca)) {
         echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom retku!<br>';
         return 0;
@@ -163,16 +192,6 @@
 
 <table>
 <?php
-/*
-$row = 6;
-$col = 6;
-  foreach($polje_2 as $row){
-    echo '<tr>';
-    foreach($row as $col ){
-
-    }
-  }
-  */
 ?>
 
 </table>
@@ -283,6 +302,7 @@ $col = 6;
       }
       echo '</table>';
     }
+
     ?>
   </table>
   <br>
