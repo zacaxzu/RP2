@@ -1,0 +1,59 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+}
+
+.middle_line {
+    border-bottom: 2px solid black;
+}
+
+th {
+    width: 25px;
+    height: 25px;
+}
+
+td {
+    width: 25px;
+    height: 25px;
+}
+
+.cell {
+    text-align: center;
+}
+
+.cell-3, .cell-9, .cell-15, .cell-21, .cell-27, .cell-33{
+    border-right: 2px solid black;
+    text-align: center;
+}
+
+.zadani_brojevi {
+    text-align: center;
+    font-weight: bold;
+}
+
+.dodani_brojevi {
+    text-align: center;
+    font-weight: lighter;
+    color: blue;
+}
+
+.nevalidni_dodani_brojevi {
+    text-align: center;
+    font-weight: lighter;
+    color: red;
+}
+
+.vertikalna_linija {
+    border-right: 2px solid black;
+}
+
+.horizontalna_linija {
+    border-bottom: 2px solid black;
+}
