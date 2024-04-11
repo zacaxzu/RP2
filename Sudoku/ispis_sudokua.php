@@ -200,10 +200,10 @@
   <?php
   //TABLICA
   
-    function ispis_tablice($polje_2, $polje)
+    function ispis_tablice($polje_2, $polje, $polje_3)
     {
       echo '<table>';
-      $valid_potez = validan_potez($polje_2);
+      //$valid_potez = validan_potez($polje_2);
       for ($i = 0; $i < 6; $i++) {
         echo "<tr>";
         for ($j = 0; $j < 6; $j++) {
@@ -230,54 +230,53 @@
           } else if ($j === 5 && $polje[$i][$j] === null) {
             if ($i === 1 || $i === 3) {
               echo '<br>Ušao u if<br>';
-              echo '<br>vrijednost validan_potez: ' . $valid_potez . '<br>';
               echo '$i: ' . $i . '<br>';
-              if($valid_potez == 1){
+              if($polje_3[$i][$j] == 1){
                 echo 'Plavo izvršeno<br>';
                 echo "<td class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
               }
-              else if($valid_potez == 0){
+              else if($polje_3[$i][$j] == 0){
                 echo 'Crveno izvršeno<br>';
                 echo "<td class='nevalidni_dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
               }
             } else {
-              if($valid_potez == 1){
+              if($polje_3[$i][$j] == 1){
                 echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
               }
-              else if($valid_potez == 0){
+              else if($polje_3[$i][$j] == 0){
                 echo "<td class='nevalidni_dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
               }
             }
           } else if ($polje[$i][$j] === null && $j != 5) {
             if ($j === 2) {
               if ($i === 1 || $i === 3) {
-                if($valid_potez == 1){
+                if($polje_3[$i][$j] == 1){
                   echo "<td class='dodani_brojevi horizontalna_linija vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
                 }
-                else if($valid_potez == 0){
+                else if($polje_3[$i][$j] == 0){
                   echo "<td class='nevalidni_dodani_brojevi horizontalna_linija vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
                 }
               } else {
-                if($valid_potez == 1){
+                if($polje_3[$i][$j] == 1){
                   echo "<td class='dodani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
                 }
-                else if($valid_potez == 0){
+                else if($polje_3[$i][$j] == 0){
                   echo "<td class='nevalidni_dodani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
                 }
               }
             } else {
               if ($i === 1 || $i === 3) {
-                if($valid_potez == 1){
+                if($polje_3[$i][$j] == 1){
                   echo "<td class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
                 }
-                else if($valid_potez == 0){
+                else if($polje_3[$i][$j] == 0){
                   echo "<td class='nevalidni_dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
                 }
               } else {
-                if($valid_potez == 1){
+                if($polje_3[$i][$j] == 1){
                   echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
                 }
-                else if($valid_potez == 0){
+                else if($polje_3[$i][$j] == 0){
                   echo "<td class='nevalidni_dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
                 }
               }

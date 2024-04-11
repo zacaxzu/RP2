@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             inicijalizacija($_SESSION['polje_2'], $polje);
             inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
         }
-        ispis_tablice($_SESSION['polje_2'], $polje, $_POST['broj_retka'] - 1, $_POST['broj_stupca'] - 1);
+        ispis_tablice($_SESSION['polje_2'], $polje, $_SESSION['polje_3']);
         echo '<br>';
         ispis_tablice_2($_SESSION['polje_2']);
         echo '<br>';
