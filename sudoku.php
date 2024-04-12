@@ -79,11 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
         }
         //usporedba_polja_fix($_SESSION['polje_2'], $_SESSION['polje_3'], $polje);
+        usporedba_polja_fix($_SESSION['polje_2'], $_SESSION['polje_3'], $polje);
+        echo '<br>Ispis polje_2:';
         ispis_tablice($_SESSION['polje_2'], $polje, $_SESSION['polje_3']);
-        echo '<br>';
+        echo '<br>Ispis polje_2: ';
         ispis_tablice_2($_SESSION['polje_2']);
-        echo '<br>';
+        echo '<br>Ispis polje_3: ';
         ispis_tablice_2($_SESSION['polje_3']);
+        echo '<br>Ispis polje: ';
+        ispis_tablice_2($polje);
     }
 }
 

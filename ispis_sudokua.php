@@ -203,26 +203,36 @@
   }
 */
   //Podešava polje_3 blue/red
-  /*
-  function usporedba_polja_fix(&$polje_2, &$polje_3, &$polje)
+  
+  function usporedba_polja_fix($polje_2, &$polje_3, &$polje)
   {
     for ($i = 0; $i < 6; $i++) {
       for ($j = 0; $j < 6; $j++) {
-        if($polje[$i][$j] == null){
+        echo 'PROVJERA_STUPCA_RETKA: ' . provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+        echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+        echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
+        if($polje[$i][$j] !== null){
+          echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
           dodaj_broj($polje_3, 2, $i, $j);
         }
         elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
             provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
             $polje[$i][$j] == null)
         {
+          echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
           dodaj_broj($polje_3, 1, $i, $j);
         }
-        else {
+        elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
+        !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+        $polje[$i][$j] == null) {
           dodaj_broj($polje_3, 0, $i, $j);
+        }
+        else{
+          dodaj_broj($polje_3, null, $i, $j);
         }
       }
     }
-  }*/
+  }
   ?>
 
 <table>
