@@ -11,13 +11,24 @@
 <body>
   <br />
   <?php
-  $polje = array(
+  $polje = array();
+  
+  $originalno_polje = array(
     array(null, null, 4, null, null, null),
     array(null, null, null, 2, 3, null),
     array(3, null, null, null, 6, null),
     array(null, 6, null, null, null, 2),
     array(null, 2, 1, null, null, null),
     array(null, null, null, 5, null, null),
+  );
+
+  $bonus_polje = array(
+    array(2, null, 4, null, null, null),
+    array(3, null, null, null, 5, null),
+    array(null, null, null, 1, null, null),
+    array(null, null, 6, null, null, null),
+    array(null, 4, null, null, null, 5),
+    array(null, null, null, 2, null, 1),
   );
 
   function inicijalizacija(&$polje_2, &$polje)
@@ -199,29 +210,31 @@
   {
     for ($i = 0; $i < 6; $i++) {
       for ($j = 0; $j < 6; $j++) {
-        /*
-        echo 'PROVJERA_STUPCA_RETKA: ' . provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
-        echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
-        echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
-        */
-        if($polje[$i][$j] !== null){
-          //echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
-          dodaj_broj($polje_3, 2, $i, $j);
-        }
-        elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
-            provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-            $polje[$i][$j] == null)
-        {
-          //echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
-          dodaj_broj($polje_3, 1, $i, $j);
-        }
-        elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
-        !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-        $polje[$i][$j] == null) {
-          dodaj_broj($polje_3, 0, $i, $j);
-        }
-        else{
-          dodaj_broj($polje_3, null, $i, $j);
+        if (isset($polje[$i][$j])){
+          /*
+          echo 'PROVJERA_STUPCA_RETKA: ' . provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+          echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+          echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
+          */
+          if($polje[$i][$j] !== null){
+            //echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
+            dodaj_broj($polje_3, 2, $i, $j);
+          }
+          elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
+              provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+              $polje[$i][$j] == null)
+          {
+            //echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
+            dodaj_broj($polje_3, 1, $i, $j);
+          }
+          elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
+          !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+          $polje[$i][$j] == null) {
+            dodaj_broj($polje_3, 0, $i, $j);
+          }
+          else{
+            dodaj_broj($polje_3, null, $i, $j);
+          }
         }
       }
     }
