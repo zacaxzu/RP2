@@ -46,7 +46,7 @@
   {
     $polje_2[$redak][$stupac] = $broj;
   }
-
+  
   function validan_potez($polje_2)
   {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -236,12 +236,7 @@
     }
     return 1;
   }
-  ?>
 
-  <table>
-  <?php
-  //TABLICA
-  
   function ispis_tablice($polje_2, $polje, $polje_3)
   {
       echo '<table>';
@@ -330,8 +325,6 @@
       echo '</table>';
   }
 
-    echo '<br>';
-
   function ispis_tablice_2($polje_2)
   {
     echo '<table>';
@@ -344,8 +337,8 @@
     echo '</table>';
   }
 
-    ?>
-  </table>
+?>
+
 </body>
 
 </html>

@@ -7,6 +7,7 @@ include('ispis_sudokua.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ime_igraca'])) {
         $_SESSION['ime_igraca'] = $_POST["ime_igraca"];
+        $_SESSION['broj_pokusaja'] = 1;  
     }
 
     if (isset($_SESSION['ime_igraca'])) {
@@ -15,28 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Igrač nije postavljen.';
     }    
 
-    if (!isset($_POST['zapocni_igru'])) {
-        $_SESSION['broj_pokusaja'] = 1;
-    }
-    else {
-        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'];
-    }
-
     if (!isset($_SESSION['broj_pokusaja'])) {
         $_SESSION['broj_pokusaja'] = 1;  
     }
     else {
-        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'];
+        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br><br>';
     }
 
     if (isset($_POST['ime_igraca'])) {
         inicijalizacija($_SESSION['polje_2'], $polje);
         inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
         ispis_tablice($_SESSION['polje_2'], $polje, $_SESSION['polje_3']);  
-    }
-
-    if(isset($_POST['reset_igre'])){
-        $_SESSION['broj_pokusaja']+1;
     }
 }
 
@@ -84,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         else if ($potezType === 'reset_igre') {
             //echo 'Kliknut reset_igre';
+            $_SESSION['broj_pokusaja']++;
             unset($_SESSION['polje_2']);
             unset($_SESSION['polje_3']);
             inicijalizacija($_SESSION['polje_2'], $polje);
