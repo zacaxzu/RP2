@@ -27,16 +27,15 @@
 
   function inicijalizacija_pomocnog_polja(&$polje_3, &$polje)
   {
-  $polje_3 = $polje; // Initialize polje_3 with the same values as polje
-  for ($i = 0; $i < 6; $i++) {
+    $polje_3 = $polje; // Initialize polje_3 with the same values as polje
+    for ($i = 0; $i < 6; $i++) {
     for ($j = 0; $j < 6; $j++) {
       if ($polje[$i][$j] !== null) {
         $polje_3[$i][$j] = 2; // Set non-null values to 2 in polje_3
       }
     }
+    }
   }
-  }
-
 
   function dodaj_broj(&$polje_2, $broj, $redak, $stupac)
   {
@@ -187,7 +186,53 @@
       $polje_2[$broj_retka][$broj_stupca] = null;
     }
   }
-
+/*
+  function provjera_stupca_retka_usporedba_fix($polje_2, $broj, $broj_stupca, $broj_retka)
+  {
+    for ($i = 0; $i < 6; $i++) {
+      if (($polje_2[$broj_retka][$i] == $broj) && ($i !== $broj_stupca)) {
+        echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom retku!<br>';
+        return 0;
+      }
+      if (($polje_2[$i][$broj_stupca] == $broj) && ($i !== $broj_retka)) {
+        echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom stupcu!';
+        return 0;
+      }
+    }
+    return 1;
+  }
+*/
+  //Podešava polje_3 blue/red
+  
+  function usporedba_polja_fix($polje_2, &$polje_3, &$polje)
+  {
+    for ($i = 0; $i < 6; $i++) {
+      for ($j = 0; $j < 6; $j++) {
+        echo 'PROVJERA_STUPCA_RETKA: ' . provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+        echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+        echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
+        if($polje[$i][$j] !== null){
+          echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
+          dodaj_broj($polje_3, 2, $i, $j);
+        }
+        elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
+            provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+            $polje[$i][$j] == null)
+        {
+          echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
+          dodaj_broj($polje_3, 1, $i, $j);
+        }
+        elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
+        !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+        $polje[$i][$j] == null) {
+          dodaj_broj($polje_3, 0, $i, $j);
+        }
+        else{
+          dodaj_broj($polje_3, null, $i, $j);
+        }
+      }
+    }
+  }
   ?>
 
 <table>
