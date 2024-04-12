@@ -37,6 +37,11 @@
     }
   }
 
+  function inicijalizacija_broja_pokusaja(&$broj_pokusaja)
+  {
+    $broj_pokusaja = 0;
+  }
+
   function dodaj_broj(&$polje_2, $broj, $redak, $stupac)
   {
     $polje_2[$redak][$stupac] = $broj;
@@ -179,11 +184,11 @@
 
   function obrisi_broj(&$polje_2, $polje, &$polje_3, $broj_retka, $broj_stupca)
   {
-    echo '<br>$broj_stupca: ' . $broj_stupca . '<br>';
-    echo '$broj_retka: ' . $broj_retka . '<br>';
+    //echo '<br>$broj_stupca: ' . $broj_stupca . '<br>';
+    //echo '$broj_retka: ' . $broj_retka . '<br>';
     if($polje[$broj_retka][$broj_stupca] == null)
     {
-      echo '<br>Usao u drugi if brisanja!<br>';
+      //echo '<br>Usao u drugi if brisanja!<br>';
       $polje_2[$broj_retka][$broj_stupca] = null;
       $polje_3[$broj_retka][$broj_stupca] = null;
     }
@@ -220,6 +225,16 @@
         }
       }
     }
+  }
+
+  function provjera_zavrsetka_igre($polje_3)
+  {
+    for ($i = 0; $i < 6; $i++) {
+      for ($j = 0; $j < 6; $j++) {
+        if($polje_3[$i][$j] == 0) return 0;
+      }
+    }
+    return 1;
   }
   ?>
 
@@ -313,21 +328,21 @@
         echo "</tr>";
       }
       echo '</table>';
-    }
+  }
 
     echo '<br>';
 
-    function ispis_tablice_2($polje_2)
-    {
-      echo '<table>';
-      for ($i = 0; $i < 6; $i++) {
-        echo "<tr>";
-        for ($j = 0; $j < 6; $j++) {
-          echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-        }
+  function ispis_tablice_2($polje_2)
+  {
+    echo '<table>';
+    for ($i = 0; $i < 6; $i++) {
+      echo "<tr>";
+      for ($j = 0; $j < 6; $j++) {
+        echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
       }
-      echo '</table>';
     }
+    echo '</table>';
+  }
 
     ?>
   </table>
