@@ -11,24 +11,13 @@
 <body>
   <br />
   <?php
-  $polje = array();
-  
-  $originalno_polje = array(
+  $polje = array(
     array(null, null, 4, null, null, null),
     array(null, null, null, 2, 3, null),
     array(3, null, null, null, 6, null),
     array(null, 6, null, null, null, 2),
     array(null, 2, 1, null, null, null),
     array(null, null, null, 5, null, null),
-  );
-
-  $bonus_polje = array(
-    array(2, null, 4, null, null, null),
-    array(3, null, null, null, 5, null),
-    array(null, null, null, 1, null, null),
-    array(null, null, 6, null, null, null),
-    array(null, 4, null, null, null, 5),
-    array(null, null, null, 2, null, 1),
   );
 
   function inicijalizacija(&$polje_2, &$polje)
@@ -210,31 +199,29 @@
   {
     for ($i = 0; $i < 6; $i++) {
       for ($j = 0; $j < 6; $j++) {
-        if (isset($polje[$i][$j])){
-          /*
-          echo 'PROVJERA_STUPCA_RETKA: ' . provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
-          echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
-          echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
-          */
-          if($polje[$i][$j] !== null){
-            //echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
-            dodaj_broj($polje_3, 2, $i, $j);
-          }
-          elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
-              provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-              $polje[$i][$j] == null)
-          {
-            //echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
-            dodaj_broj($polje_3, 1, $i, $j);
-          }
-          elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
-          !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-          $polje[$i][$j] == null) {
-            dodaj_broj($polje_3, 0, $i, $j);
-          }
-          else{
-            dodaj_broj($polje_3, null, $i, $j);
-          }
+        /*
+        echo 'PROVJERA_STUPCA_RETKA: ' . provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+        echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
+        echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
+        */
+        if($polje[$i][$j] !== null){
+          //echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
+          dodaj_broj($polje_3, 2, $i, $j);
+        }
+        elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
+            provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+            $polje[$i][$j] == null)
+        {
+          //echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
+          dodaj_broj($polje_3, 1, $i, $j);
+        }
+        elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
+        !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+        $polje[$i][$j] == null) {
+          dodaj_broj($polje_3, 0, $i, $j);
+        }
+        else{
+          dodaj_broj($polje_3, null, $i, $j);
         }
       }
     }
@@ -250,93 +237,53 @@
     return 1;
   }
 
+  function isEditable($polje, $i, $j)
+  {
+    // Check if the cell value is null, indicating it's an editable cell
+    return $polje[$i][$j] === null;
+  }
+
   function ispis_tablice($polje_2, $polje, $polje_3)
   {
-      echo '<table>';
-      //$valid_potez = validan_potez($polje_2);
-      for ($i = 0; $i < 6; $i++) {
-        echo "<tr>";
-        for ($j = 0; $j < 6; $j++) {
-          if ($j === 5 && $polje[$i][$j] != null) {
-            if ($i === 1 || $i === 3) {
-              echo "<td class='zadani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-            } else {
-              echo "<td class='zadani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-            }
-          } else if ($polje[$i][$j] != null) {
-            if ($j === 2) {
-              if ($i === 1 || $i === 3) {
-                echo "<td class='zadani_brojevi vertikalna_linija horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-              } else {
-                echo "<td class='zadani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
-              }
-            } else {
-              if ($i === 1 || $i === 3) {
-                echo "<td class='zadani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-              } else {
-                echo "<td class='zadani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-              }
-            }
-          } else if ($j === 5 && $polje[$i][$j] === null) {
-            if ($i === 1 || $i === 3) {
-              //echo '<br>Ušao u if<br>';
-              //echo '$i: ' . $i . '<br>';
-              if($polje_3[$i][$j] == 1){
-                //echo 'Plavo izvršeno<br>';
-                echo "<td class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-              }
-              else if($polje_3[$i][$j] == 0){
-                //echo 'Crveno izvršeno<br>';
-                echo "<td class='nevalidni_dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-              }
-            } else {
-              if($polje_3[$i][$j] == 1){
-                echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-              }
-              else if($polje_3[$i][$j] == 0){
-                echo "<td class='nevalidni_dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-              }
-            }
-          } else if ($polje[$i][$j] === null && $j != 5) {
-            if ($j === 2) {
-              if ($i === 1 || $i === 3) {
-                if($polje_3[$i][$j] == 1){
-                  echo "<td class='dodani_brojevi horizontalna_linija vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
-                }
-                else if($polje_3[$i][$j] == 0){
-                  echo "<td class='nevalidni_dodani_brojevi horizontalna_linija vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
-                }
-              } else {
-                if($polje_3[$i][$j] == 1){
-                  echo "<td class='dodani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
-                }
-                else if($polje_3[$i][$j] == 0){
-                  echo "<td class='nevalidni_dodani_brojevi vertikalna_linija'>" . $polje_2[$i][$j] . "</td>";
-                }
-              }
-            } else {
-              if ($i === 1 || $i === 3) {
-                if($polje_3[$i][$j] == 1){
-                  echo "<td class='dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-                }
-                else if($polje_3[$i][$j] == 0){
-                  echo "<td class='nevalidni_dodani_brojevi horizontalna_linija'>" . $polje_2[$i][$j] . "</td>";
-                }
-              } else {
-                if($polje_3[$i][$j] == 1){
-                  echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-                }
-                else if($polje_3[$i][$j] == 0){
-                  echo "<td class='nevalidni_dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
-                }
-              }
-            }
-          }
+    echo '<form method="post" action="">';
+    echo '<table>';
+    for ($i = 0; $i < 6; $i++) {
+      echo "<tr>";
+      for ($j = 0; $j < 6; $j++) {
+        $cellValue = $polje_2[$i][$j];
+        //$isEditable = isEditable($polje, $i, $j);
+        $isValid = validan_potez_2($polje_2, $cellValue, $i, $j);
+
+        $class = '';
+
+        // Check if the cell value is non-null in $polje
+        if (!isEditable($polje, $i, $j)) {
+          $class = 'zadani_brojevi';
+        } else {
+          $class = 'editable';
+          $class .= $isValid ? ' dodani_brojevi' : ' nevalidni_dodani_brojevi';
         }
-        echo "</tr>";
+
+        if($i === 1 || $i === 3){
+          $class .= ' horizontalna_linija';
+        }
+        if( $j === 2){
+          $class .= ' vertikalna_linija';
+        }
+
+        if ($cellValue === null) {
+          echo "<td class='$class'><input class='input-celija' type='text' name='cell[$i][$j]' value='' maxlength='1'></td>";
+        } else {
+          echo "<td class='$class'>$cellValue</td>";
+        }
+
       }
-      echo '</table>';
+      echo "</tr>";
+    }
+    echo '</table>';
+    echo '</form>';
   }
+
 
   function ispis_tablice_2($polje_2)
   {

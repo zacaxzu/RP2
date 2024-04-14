@@ -24,6 +24,11 @@ td {
     height: 25px;
 }
 
+.input-celija {
+    width: 25px;
+    height: 25px;
+}
+
 .cell {
     text-align: center;
 }
@@ -36,6 +41,7 @@ td {
 .zadani_brojevi {
     text-align: center;
     font-weight: bold;
+    color: black;
 }
 
 .dodani_brojevi {

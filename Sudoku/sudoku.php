@@ -1,4 +1,4 @@
-<h1>Sudoku 6×6!</h1>
+<h1>Sudoku 6x6!</h1>
 
 <?php
 session_start();
@@ -23,33 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br><br>';
     }
 
-    if(isset($_POST['odabir_sudokua'])){
-        $sudokuType = $_POST['odabir_sudokua'];
-        if($sudokuType === 'prvi_sudoku'){
-            $polje = array_fill(0, 6, array_fill(0, 6, null));
-            inicijalizacija($polje, $originalno_polje);
-        }
-        elseif($sudokuType === 'drugi_sudoku'){
-            //$polje = $bonus_polje;
-            $polje = array_fill(0, 6, array_fill(0, 6, null));
-            inicijalizacija($polje, $bonus_polje);
-        }
-        echo 'Tablica polje nakon rođenja: ';
-        ispis_tablice_2($polje);
-    }
-
     if (isset($_POST['ime_igraca'])) {
-        $_SESSION['polje_2'] = array_fill(0, 6, array_fill(0, 6, null));
-        $_SESSION['polje_3'] = array_fill(0, 6, array_fill(0, 6, null));
         inicijalizacija($_SESSION['polje_2'], $polje);
         inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
         ispis_tablice($_SESSION['polje_2'], $polje, $_SESSION['polje_3']);  
-        echo 'Tablica polje_2 nakon rođenja: ';
-        ispis_tablice_2($_SESSION['polje_2']);
-        echo 'Tablica polje_3 nakon rođenja: ';
-        ispis_tablice_2($_SESSION['polje_3']);
     }
-
 }
 
 if (!isset($_SESSION['polje_2'])) {
@@ -65,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //echo $potezType;
         if ($potezType === 'unesi_broj') {
             $broj_retka = $_POST['broj_retka'] - 1;
+            echo '$broj_retka' . $broj_retka . '<br>';
             $broj_stupca = $_POST['broj_stupca'] - 1;
             $broj = $_POST['upisan_broj'];
             //provjera unosa
@@ -103,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $polje);
         }
         if(provjera_zavrsetka_igre($_SESSION['polje_3'])){
-            echo 'Čestitam pobijedili ste!<br>';
+            echo 'Čestitam pobijedili ste!';
         }
         //usporedba_polja_fix($_SESSION['polje_2'], $_SESSION['polje_3'], $polje);
         usporedba_polja_fix($_SESSION['polje_2'], $_SESSION['polje_3'], $polje);
@@ -119,6 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         */
     }
 }
-include('odabir_poteza.html');
+include('odabir_poteza.php');
 ?>
 <br>
