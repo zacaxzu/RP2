@@ -11,7 +11,7 @@
 <body>
   <br />
   <?php
-  $polje = array(
+  $polje1 = array(
     array(null, null, 4, null, null, null),
     array(null, null, null, 2, 3, null),
     array(3, null, null, null, 6, null),
@@ -20,7 +20,21 @@
     array(null, null, null, 5, null, null),
   );
 
+  $polje2 = array(
+    array(null, 2, null, 5, null, 3),
+    array(null, null, null, null, null, null),
+    array(5, null, null, null, 3, null),
+    array(null, 6, null, null, 2, null),
+    array(null, null, null, 3, 4, 6),
+    array(3, null, 6, null, null, null),
+  );
 
+  $polje = array();
+
+  function inicijalizacija_odabira_polja(&$polje, $odabrano_polje)
+  {
+    $polje = $odabrano_polje;
+  }
 
   function inicijalizacija(&$polje_2, &$polje)
   {
@@ -32,7 +46,7 @@
     $polje_3 = $polje; // Initialize polje_3 with the same values as polje
     for ($i = 0; $i < 6; $i++) {
     for ($j = 0; $j < 6; $j++) {
-      if ($polje[$i][$j] !== null) {
+      if ($_SESSION['polje'][$i][$j] !== null) {
         $polje_3[$i][$j] = 2; // Set non-null values to 2 in polje_3
       }
     }
@@ -210,20 +224,20 @@
         echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
         echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
         */
-        if($polje[$i][$j] !== null){
+        if($_SESSION['polje'][$i][$j] !== null){
           //echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
           dodaj_broj($polje_3, 2, $i, $j);
         }
         elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
             provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-            $polje[$i][$j] == null)
+          $_SESSION['polje'][$i][$j] == null)
         {
           //echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
           dodaj_broj($polje_3, 1, $i, $j);
         }
         elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
         !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-        $polje[$i][$j] == null) {
+          $_SESSION['polje'][$i][$j] == null) {
           dodaj_broj($polje_3, 0, $i, $j);
         }
         else{

@@ -26,7 +26,7 @@
           $class = '';
 
           // Check if the cell value is non-null in $polje
-          if (!isEditable($polje, $i, $j)) {
+          if (!isEditable($_SESSION['polje'], $i, $j)) {
             //echo 'Usao u isEditable.<br>';
             $class = 'zadani_brojevi';
           } else {
