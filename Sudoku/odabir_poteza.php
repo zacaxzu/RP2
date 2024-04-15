@@ -21,38 +21,42 @@
           $cellValue = $_SESSION['polje_2'][$i][$j];
           //$isEditable = isEditable($polje, $i, $j);
           $isValid = validan_potez_2($_SESSION['polje_2'][$i][$j], $cellValue, $i, $j);
-          echo '$isValid: ' . $isValid . '<br>';
+          //echo '$isValid: ' . $isValid . '<br>';
 
           $class = '';
 
           // Check if the cell value is non-null in $polje
           if (!isEditable($polje, $i, $j)) {
-            echo 'Usao u isEditable.<br>';
+            //echo 'Usao u isEditable.<br>';
             $class = 'zadani_brojevi';
           } else {
             $class = 'editable';
             if ($_SESSION['polje_3'][$i][$j] == 0) {
-              echo '$_SESSION["polje_3"][$i][$j] == 0: ' . $_SESSION['polje_3'][$i][$j] . '<br>';
+              //echo '$_SESSION["polje_3"][$i][$j] == 0: ' . $_SESSION['polje_3'][$i][$j] . '<br>';
               $class .= ' nevalidni_dodani_brojevi';
             } else if ($_SESSION['polje_3'][$i][$j] == 1) {
-              echo '$_SESSION["polje_3"][$i][$j] == 1: ' . $_SESSION['polje_3'][$i][$j] . '<br>';
+              //echo '$_SESSION["polje_3"][$i][$j] == 1: ' . $_SESSION['polje_3'][$i][$j] . '<br>';
               $class .= ' dodani_brojevi';
             }
           }
 
           if ($i == 1 || $i == 3) {
-            echo ' Usao u horizontalna linija<br>';
+            //echo ' Usao u horizontalna linija<br>';
             $class .= ' horizontalna_linija';
           }
           if ($j == 2) {
-            echo ' Usao u vertikalna linija<br>';
+            //echo ' Usao u vertikalna linija<br>';
             $class .= ' vertikalna_linija';
           }
-          echo '$class: ' . $class . '<br>';
+          //echo '$class: ' . $class . '<br>';
           if ($cellValue === null) {
       ?>
+          <?php
+            /*
             <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
             <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
+            */
+          ?>
       <?php
             echo "<td class='redak-td $class'><input class='input-celija' type='text' name='sudoku_cell[$i][$j]' value='{$_SESSION['polje_2'][$i][$j]}' maxlength='1'></td>";
           } else {
@@ -66,44 +70,6 @@
 
     <input type="radio" name="odabir_poteza" value="unesi_broj" id="odabir_unesi_broj" />
     Unos brojeva pomoću textboxeva.
-    <?php
-    /*
-      <input type="text" name="upisan_broj" id="upisan_broj"/> u redak
-      <select name="broj_retka" value="broj_retka">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-      </select>
-      i stupac
-      <select name="broj_stupca" value="broj_stupca">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-      </select>
-      */
-    ?>
-
-    <table>
-      <?php
-      /*
-      for ($i = 0; $i < 6; $i++) : ?>
-        <tr>
-          <?php for ($j = 0; $j < 6; $j++) : ?>
-            <td>
-              <button type="submit" name="cell" value="<?= $i ?>,<?= $j ?>" style="width:100%; height:100%; border:none; background:none;">
-                <?php echo $_SESSION['polje_2'][$i][$j] ?? ''; ?>
-              </button>
-            </td>
-          <?php endfor; ?>
-        </tr>
-      <?php endfor; */ ?>
-    </table>
 
     <br />
     <input type="radio" name="odabir_poteza" value="obrisi_broj" id="odabir_obrisi_broj" />

@@ -20,6 +20,8 @@
     array(null, null, null, 5, null, null),
   );
 
+
+
   function inicijalizacija(&$polje_2, &$polje)
   {
     $polje_2 = $polje;
@@ -74,7 +76,7 @@
   {
     $polje_2 = $polje_21;
     $broj = $broj1;
-    echo '$broj: ' . $broj;
+    //echo '$broj: ' . $broj;
     $broj_stupca = $broj_stupca1;
     $broj_retka = $broj_retka1;
     $validan = true;
@@ -93,7 +95,7 @@
           return 0;
         }
         if (isset($polje_2[$i][$broj_stupca]) && $polje_2[$i][$broj_stupca] == $broj && $i !== $broj_retka) {
-          echo 'Ušao u provjera_stupca_retka.<br>';
+          //echo 'Ušao u provjera_stupca_retka.<br>';
           //echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom stupcu!';
           return 0;
         }
@@ -281,7 +283,7 @@
           <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
           <?php
           echo "<td class='$class'><input class='input-celija' type='text' name='cell[$i][$j]' value='{$polje_2[$i][$j]}' maxlength='1'></td>";
-          echo '$i: ' . $i . ' $j: ' . $j . '<br>';
+          //echo '$i: ' . $i . ' $j: ' . $j . '<br>';
         } else {
           echo "<td class='$class'>$cellValue</td>";
         }
