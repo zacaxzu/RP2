@@ -28,8 +28,9 @@ td {
 }
 
 .input-celija {
-    width: 30px;
-    height: 30px;
+    text-align: center;
+    width: 25px;
+    height: 25px;
     color: black;
 }
 
