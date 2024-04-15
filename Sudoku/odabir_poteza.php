@@ -31,27 +31,29 @@
             $class = 'zadani_brojevi';
           } else {
             $class = 'editable';
-            if($_SESSION['polje_3'][$i][$j] == 0){
+            if ($_SESSION['polje_3'][$i][$j] == 0) {
               echo '$_SESSION["polje_3"][$i][$j] == 0: ' . $_SESSION['polje_3'][$i][$j] . '<br>';
               $class .= ' nevalidni_dodani_brojevi';
-            }else if($_SESSION['polje_3'][$i][$j] == 1){
+            } else if ($_SESSION['polje_3'][$i][$j] == 1) {
               echo '$_SESSION["polje_3"][$i][$j] == 1: ' . $_SESSION['polje_3'][$i][$j] . '<br>';
               $class .= ' dodani_brojevi';
             }
           }
 
-          if ($i === 1 || $i === 3) {
+          if ($i == 1 || $i == 3) {
+            echo ' Usao u horizontalna linija<br>';
             $class .= ' horizontalna_linija';
           }
-          if ($j === 2) {
+          if ($j == 2) {
+            echo ' Usao u vertikalna linija<br>';
             $class .= ' vertikalna_linija';
           }
-
+          echo '$class: ' . $class . '<br>';
           if ($cellValue === null) {
-            ?>
-              <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
-              <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
-            <?php
+      ?>
+            <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
+            <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
+      <?php
             echo "<td class='redak-td $class'><input class='input-celija' type='text' name='sudoku_cell[$i][$j]' value='{$_SESSION['polje_2'][$i][$j]}' maxlength='1'></td>";
           } else {
             echo "<td class='$class'>$cellValue</td>";
