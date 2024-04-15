@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="ispis_sudokua.css" />
+  <?php // <link rel="stylesheet" href="ispis_sudokua.css" /> ?>
 </head>
 
 <body>
@@ -85,17 +85,21 @@
 
   function provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka)
   {
-    for ($i = 0; $i < 6; $i++) {
-      if (($polje_2[$broj_retka][$i] == $broj) && ($i !== $broj_stupca)) {
-        //echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom retku!<br>';
-        return 0;
+    if (isset($polje_2) && is_array($polje_2) && isset($polje_2[$broj_retka])) {
+      for ($i = 0; $i < 6; $i++) {
+        // Check if the $polje_2[$broj_retka] is set and is an array
+        if (isset($polje_2[$broj_retka][$i]) && $polje_2[$broj_retka][$i] == $broj && $i !== $broj_stupca) {
+          //echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom retku!<br>';
+          return 0;
+        }
+        if (isset($polje_2[$i][$broj_stupca]) && $polje_2[$i][$broj_stupca] == $broj && $i !== $broj_retka) {
+          echo 'Ušao u provjera_stupca_retka.<br>';
+          //echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom stupcu!';
+          return 0;
+        }
       }
-      if (($polje_2[$i][$broj_stupca] == $broj) && ($i !== $broj_retka)) {
-        //echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom stupcu!';
-        return 0;
-      }
+      return 1;
     }
-    return 1;
   }
 
   function provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka)
@@ -245,7 +249,7 @@
 
   function ispis_tablice($polje_2, $polje, $polje_3)
   {
-    echo '<form method="post" action="">';
+    echo '<form method="post" action="sudoku.php">';
     echo '<table>';
     for ($i = 0; $i < 6; $i++) {
       echo "<tr>";
@@ -272,15 +276,22 @@
         }
 
         if ($cellValue === null) {
-          echo "<td class='$class'><input class='input-celija' type='text' name='cell[$i][$j]' value='' maxlength='1'></td>";
+          ?>
+          <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
+          <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
+          <?php
+          echo "<td class='$class'><input class='input-celija' type='text' name='cell[$i][$j]' value='{$polje_2[$i][$j]}' maxlength='1'></td>";
+          echo '$i: ' . $i . ' $j: ' . $j . '<br>';
         } else {
           echo "<td class='$class'>$cellValue</td>";
         }
-
       }
       echo "</tr>";
     }
     echo '</table>';
+    ?>;
+    
+    <?php
     echo '</form>';
   }
 

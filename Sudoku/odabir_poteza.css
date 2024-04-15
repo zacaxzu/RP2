@@ -1,4 +1,6 @@
-table, th, td {
+table,
+th,
+td {
     border: 1px solid black;
     border-collapse: collapse;
 }
@@ -8,6 +10,7 @@ table {
     border-right: 2px solid black;
     border-bottom: 2px solid black;
     border-top: 2px solid black;
+    width: 150px;
 }
 
 .middle_line {
@@ -27,13 +30,19 @@ td {
 .input-celija {
     width: 25px;
     height: 25px;
+    color: black;
 }
 
 .cell {
     text-align: center;
 }
 
-.cell-3, .cell-9, .cell-15, .cell-21, .cell-27, .cell-33{
+.cell-3,
+.cell-9,
+.cell-15,
+.cell-21,
+.cell-27,
+.cell-33 {
     border-right: 2px solid black;
     text-align: center;
 }
@@ -62,4 +71,32 @@ td {
 
 .horizontalna_linija {
     border-bottom: 2px solid black;
+}
+
+.ispis-tablice {
+    width: 100%;
+    /* Or a specific width like 600px */
+    border-collapse: collapse;
+    /* To ensure borders are collapsed properly */
+}
+
+.ispis-tablice td {
+    width: 50px;
+    /* Or whatever width you prefer */
+    padding: 5px;
+    /* Optional padding */
+    border: 1px solid black;
+    /* Optional border */
+}
+
+.input-tablica {
+    width: 20px;
+}
+
+.redak-td {
+    width: 25px;
+}
+
+.redak-tr {
+    width: 25px;
 }
