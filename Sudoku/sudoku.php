@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if (!isset($_SESSION['broj_pokusaja'])) {
-        $_SESSION['broj_pokusaja'] = 0;  
+        //$_SESSION['broj_pokusaja'] = 0;  
     }
     else {
         echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br><br>';
@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($potezType === 'unesi_broj') {
             if (isset($_POST['sudoku_cell'])) {
                 $sudokuCells = $_POST['sudoku_cell'];
+                $_SESSION['broj_pokusaja']++;
 
                 foreach ($sudokuCells as $i => $row) {
                     foreach ($row as $j => $cell) {
@@ -73,6 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } 
         else if ($potezType === 'obrisi_broj') {
+
+            $_SESSION['broj_pokusaja']++;
             //echo 'Kliknut obrisi_broj';
             $broj_retka = $_POST['redak_obrisi'] - 1;
             //echo 'broj_retka: ' . $broj_retka . '<br>';
@@ -85,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         else if ($potezType === 'reset_igre') {
             //echo 'Kliknut reset_igre';
-            $_SESSION['broj_pokusaja']++;
+            $_SESSION['broj_pokusaja'] = 0;
             unset($_SESSION['polje_2']);
             unset($_SESSION['polje_3']);
             inicijalizacija($_SESSION['polje_2'], $_SESSION['polje']);
