@@ -49,16 +49,17 @@
             $class .= ' vertikalna_linija';
           }
           //echo '$class: ' . $class . '<br>';
+
+          
           if ($cellValue === null) {
-      ?>
-          <?php
-            /*
-            <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
-            <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
-            */
-          ?>
-      <?php
-            echo "<td class='redak-td $class'><input class='input-celija' type='text' name='sudoku_cell[$i][$j]' value='{$_SESSION['polje_2'][$i][$j]}' maxlength='1'></td>";
+            $validNumbers = validNumbers($_SESSION['polje_2'], $i, $j);
+            echo "<td class='redak-td $class'><input class='input-celija' type='text' name='sudoku_cell[$i][$j]' value='{$_SESSION['polje_2'][$i][$j]}' maxlength='1'><br>";
+
+            foreach ($validNumbers as $number) {
+              echo "<span class='valid-number'>$number</span>";
+            }
+
+            echo "</td>";
           } else {
             echo "<td class='$class'>$cellValue</td>";
           }

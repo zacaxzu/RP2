@@ -21,7 +21,7 @@
   );
 
   $polje2 = array(
-    array(null, 2, null, 5, null, 3),
+    array(6, 2, null, 5, null, 3),
     array(null, null, null, null, null, null),
     array(5, null, null, null, 3, null),
     array(null, 6, null, null, 2, null),
@@ -323,6 +323,40 @@
     }
     echo '</table>';
   }
+
+  function validNumbers($grid, $row, $col)
+  {
+    $valid = range(1, 6); // All numbers from 1 to 6 are considered valid by default
+
+    // Remove numbers already in the same row
+    for ($i = 0; $i < 6; $i++) {
+      if ($grid[$row][$i] !== null && in_array($grid[$row][$i], $valid)) {
+        unset($valid[array_search($grid[$row][$i], $valid)]);
+      }
+    }
+
+    // Remove numbers already in the same column
+    for ($i = 0; $i < 6; $i++) {
+      if ($grid[$i][$col] !== null && in_array($grid[$i][$col], $valid)) {
+        unset($valid[array_search($grid[$i][$col], $valid)]);
+      }
+    }
+
+    // Remove numbers already in the same 2x3 box
+    $boxRowStart = floor($row / 2) * 2;
+    $boxColStart = floor($col / 3) * 3;
+
+    for ($i = $boxRowStart; $i < $boxRowStart + 2; $i++) {
+      for ($j = $boxColStart; $j < $boxColStart + 3; $j++) {
+        if ($grid[$i][$j] !== null && in_array($grid[$i][$j], $valid)) {
+          unset($valid[array_search($grid[$i][$j], $valid)]);
+        }
+      }
+    }
+
+    return $valid;
+  }
+
 
 ?>
 

@@ -10,6 +10,7 @@ table {
     border-right: 2px solid black;
     border-bottom: 2px solid black;
     border-top: 2px solid black;
+    font-size: larger;
 }
 /*
 .middle_line {
@@ -27,8 +28,8 @@ td {
 }
 
 .input-celija {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     color: black;
 }
 
@@ -57,6 +58,12 @@ td {
 .horizontalna_linija {
     border-bottom: 2px solid black;
 }
+
+.valid-number {
+    font-size: small;
+    color: black;
+}
+
 /*
 .ispis-tablice {
     width: 100%;
