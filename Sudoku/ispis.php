@@ -1,26 +1,21 @@
 <?php
 session_start();
 include('ispis_sudokua.php');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['ime_igraca'])) {
         $_SESSION['ime_igraca'] = $_POST["ime_igraca"];
         $_SESSION['broj_pokusaja'] = 0;
-        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br>';
+        
     }
 
     if (isset($_SESSION['ime_igraca'])) {
-        echo 'Igrač: ' . $_SESSION['ime_igraca'];
+        echo 'Igrač: ' . $_SESSION['ime_igraca'] . '<br>';
     } else {
         echo 'Igrač nije postavljen.';
     }
-    /*
-    if (isset($_SESSION['broj_pokusaja'])) {
-        $_SESSION['broj_pokusaja'] = 0;
-        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br><br>';
-    } 
-    */
 
+    
+    
     if (isset($_POST['odabir_sudokua'])) {
         $_SESSION['odabir_sudokua'] = $_POST['odabir_sudokua'];
 
@@ -85,11 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             inicijalizacija($_SESSION['polje_2'], $_SESSION['polje']);
             inicijalizacija_pomocnog_polja($_SESSION['polje_3'], $_SESSION['polje']);
         }
-        if (provjera_zavrsetka_igre($_SESSION['polje_3'])) {
-            echo 'Čestitam pobijedili ste!';
-        }
+        
         usporedba_polja_fix($_SESSION['polje_2'], $_SESSION['polje_3'], $_SESSION['polje']);
-        echo '<br>Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br>';
+        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br>';
+    }
+    if (($_SESSION['broj_pokusaja']) == 0) {
+        echo 'Broj pokusaja: ' . $_SESSION['broj_pokusaja'] . '<br>';
+    }
+    if (provjera_zavrsetka_igre($_SESSION['polje_3'])) {
+        echo 'Čestitam pobijedili ste!<br>';
     }
     include('odabir_poteza.php');
 }

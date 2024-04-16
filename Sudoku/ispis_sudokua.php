@@ -4,9 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-  <?php // <link rel="stylesheet" href="ispis_sudokua.css" /> 
-  ?>
+  <title>Sudoku</title>
 </head>
 
 <body>
@@ -44,11 +42,11 @@
 
   function inicijalizacija_pomocnog_polja(&$polje_3, &$polje)
   {
-    $polje_3 = $polje; // Initialize polje_3 with the same values as polje
+    $polje_3 = $polje; 
     for ($i = 0; $i < 6; $i++) {
       for ($j = 0; $j < 6; $j++) {
         if ($_SESSION['polje'][$i][$j] !== null) {
-          $polje_3[$i][$j] = 2; // Set non-null values to 2 in polje_3
+          $polje_3[$i][$j] = 2; 
         }
       }
     }
@@ -104,7 +102,6 @@
   {
     if (isset($polje_2) && is_array($polje_2) && isset($polje_2[$broj_retka])) {
       for ($i = 0; $i < 6; $i++) {
-        // Check if the $polje_2[$broj_retka] is set and is an array
         if (isset($polje_2[$broj_retka][$i]) && $polje_2[$broj_retka][$i] == $broj && $i !== $broj_stupca) {
           //echo 'Uneseni broj: ' . $broj . ' već se nalazi u odabranom retku!<br>';
           return 0;
@@ -126,14 +123,7 @@
     if ((floor($broj_retka / 2)) == 0) $redak_bloka = 0;
     else if ((floor($broj_retka / 2)) == 1) $redak_bloka = 1;
     else if ((floor($broj_retka / 2)) == 2) $redak_bloka = 2;
-    /*
-    echo '<br>$broj_stupca: ' . $broj_stupca . '<br>';
-    echo '$broj_retka: ' . $broj_retka . '<br>';
-    echo 'floor($broj_stupca / 3): ' . floor($broj_stupca / 3) . '<br>';
-    echo '(floor($broj_retka / 2): ' . floor($broj_retka / 2) . '<br>';
-    
-    echo 'provjera_bloka: $i = ' . $redak_bloka . ' $j = ' . $stupac_bloka;
-    */
+
     if ($redak_bloka === 0 && $stupac_bloka === 0) {
       //echo 'Ušao u $redak_bloka === 0 && $stupac_bloka === 0';
       for ($i = $redak_bloka; $i < 2; $i++) {
@@ -248,7 +238,6 @@
 
   function isEditable($polje, $i, $j)
   {
-    // Check if the cell value is null, indicating it's an editable cell
     return $polje[$i][$j] === null;
   }
 
@@ -260,12 +249,10 @@
       echo "<tr>";
       for ($j = 0; $j < 6; $j++) {
         $cellValue = $polje_2[$i][$j];
-        //$isEditable = isEditable($polje, $i, $j);
         $isValid = validan_potez_2($polje_2, $cellValue, $i, $j);
 
         $class = '';
 
-        // Check if the cell value is non-null in $polje
         if (!isEditable($polje, $i, $j)) {
           $class = 'zadani_brojevi';
         } else {
@@ -281,7 +268,7 @@
         }
 
         if ($cellValue === null) {
-  ?>
+          ?>
           <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
           <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
           <?php
@@ -293,15 +280,14 @@
       }
       echo "</tr>";
     }
-    echo '</table>';
-          ?>;
+  echo '</table>';
+  ?>;
+  <?php
+  echo '</form>';
+}
 
-        <?php
-        echo '</form>';
-      }
 
-
-      function ispis_tablice_2($polje_2)
+function ispis_tablice_2($polje_2)
       {
         echo '<table>';
         for ($i = 0; $i < 6; $i++) {
@@ -313,7 +299,7 @@
         echo '</table>';
       }
 
-      function validNumbers($grid, $row, $col)
+function validNumbers($grid, $row, $col)
       {
         $valid = range(1, 6); // All numbers from 1 to 6 are considered valid by default
 
