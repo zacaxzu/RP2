@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <form method="post" action="sudoku.php">
+  <form method="post" action="ispis.php">
     <br>
 
     <table class="ispis-tablice">
@@ -53,7 +53,7 @@
           
           if ($cellValue === null) {
             $validNumbers = validNumbers($_SESSION['polje_2'], $i, $j);
-            echo "<td class='redak-td $class'><input class='input-celija' type='text' name='sudoku_cell[$i][$j]' value='{$_SESSION['polje_2'][$i][$j]}' maxlength='1'><br>";
+            echo "<td class='redak-td $class'><input class='input-celija' type='text' name='sudoku_cell[$i][$j]' value='{$_SESSION['polje_2'][$i][$j]}' maxlength='1' pattern='[1-6]' title='Upiši broj između 1 i 6!'><br>";
 
             foreach ($validNumbers as $number) {
               echo "<span class='valid-number'>$number</span>";
@@ -61,7 +61,7 @@
 
             echo "</td>";
           } else {
-            echo "<td class='$class'>$cellValue</td>";
+            echo "<td class='redak-td $class'>$cellValue</td>";
           }
         }
         echo "</tr>";

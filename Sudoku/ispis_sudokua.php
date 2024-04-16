@@ -5,11 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <?php // <link rel="stylesheet" href="ispis_sudokua.css" /> ?>
+  <?php // <link rel="stylesheet" href="ispis_sudokua.css" /> 
+  ?>
 </head>
 
 <body>
-  <br />
+  <h1>Sudoku 6×6!</h1>
   <?php
   $polje1 = array(
     array(null, null, 4, null, null, null),
@@ -45,11 +46,11 @@
   {
     $polje_3 = $polje; // Initialize polje_3 with the same values as polje
     for ($i = 0; $i < 6; $i++) {
-    for ($j = 0; $j < 6; $j++) {
-      if ($_SESSION['polje'][$i][$j] !== null) {
-        $polje_3[$i][$j] = 2; // Set non-null values to 2 in polje_3
+      for ($j = 0; $j < 6; $j++) {
+        if ($_SESSION['polje'][$i][$j] !== null) {
+          $polje_3[$i][$j] = 2; // Set non-null values to 2 in polje_3
+        }
       }
-    }
     }
   }
 
@@ -62,7 +63,7 @@
   {
     $polje_2[$redak][$stupac] = $broj;
   }
-  
+
   function validan_potez($polje_2)
   {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -78,7 +79,7 @@
           //echo 'broj_stupca: ' . $broj_stupca . '<br>';
           $validan = provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka);
           //echo '$validan: ' . $validan . '<br>';
-          if($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
+          if ($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
           //echo '$validan: ' . $validan . '<br>';
           return $validan;
         }
@@ -95,7 +96,7 @@
     $broj_retka = $broj_retka1;
     $validan = true;
     $validan = provjera_stupca_retka($polje_2, $broj, $broj_stupca, $broj_retka);
-    if($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
+    if ($validan) $validan = provjera_bloka($polje_2, $broj, $broj_stupca, $broj_retka);
     return $validan;
   }
 
@@ -133,8 +134,7 @@
     
     echo 'provjera_bloka: $i = ' . $redak_bloka . ' $j = ' . $stupac_bloka;
     */
-    if ($redak_bloka === 0 && $stupac_bloka === 0)
-    {
+    if ($redak_bloka === 0 && $stupac_bloka === 0) {
       //echo 'Ušao u $redak_bloka === 0 && $stupac_bloka === 0';
       for ($i = $redak_bloka; $i < 2; $i++) {
         for ($j = $stupac_bloka; $j < 3; $j++) {
@@ -143,9 +143,7 @@
           }
         }
       }
-    }
-    else if ($redak_bloka === 0 && $stupac_bloka === 1)
-    {
+    } else if ($redak_bloka === 0 && $stupac_bloka === 1) {
       //echo 'Ušao u $redak_bloka === 0 && $stupac_bloka === 1';
       for ($i = $redak_bloka; $i < 2; $i++) {
         for ($j = $stupac_bloka + 2; $j < 6; $j++) {
@@ -154,9 +152,7 @@
           }
         }
       }
-    } 
-    else if ($redak_bloka === 1 && $stupac_bloka === 0) 
-    {
+    } else if ($redak_bloka === 1 && $stupac_bloka === 0) {
       //echo 'Ušao u $redak_bloka === 1 && $stupac_bloka === 0';
       for ($i = $redak_bloka + 1; $i < 4; $i++) {
         for ($j = $stupac_bloka; $j < 3; $j++) {
@@ -165,9 +161,7 @@
           }
         }
       }
-    } 
-    else if ($redak_bloka === 1 && $stupac_bloka === 1) 
-    {
+    } else if ($redak_bloka === 1 && $stupac_bloka === 1) {
       //echo 'Ušao u $redak_bloka === 1 && $stupac_bloka === 1';
       for ($i = $redak_bloka + 1; $i < 4; $i++) {
         for ($j = $stupac_bloka + 2; $j < 6; $j++) {
@@ -176,9 +170,7 @@
           }
         }
       }
-    } 
-    else if ($redak_bloka === 2 && $stupac_bloka === 0) 
-    {
+    } else if ($redak_bloka === 2 && $stupac_bloka === 0) {
       //echo 'Ušao u $redak_bloka === 2 && $stupac_bloka === 0';
       for ($i = $redak_bloka + 2; $i < 6; $i++) {
         for ($j = $stupac_bloka; $j < 3; $j++) {
@@ -187,9 +179,7 @@
           }
         }
       }
-    } 
-    else if ($redak_bloka === 2 && $stupac_bloka === 1) 
-    {
+    } else if ($redak_bloka === 2 && $stupac_bloka === 1) {
       //echo 'Ušao u $redak_bloka === 2 && $stupac_bloka === 1';
       for ($i = $redak_bloka + 2; $i < 6; $i++) {
         for ($j = $stupac_bloka + 2; $j < 6; $j++) {
@@ -198,7 +188,7 @@
           }
         }
       }
-    } 
+    }
     return 1;
   }
 
@@ -206,8 +196,7 @@
   {
     //echo '<br>$broj_stupca: ' . $broj_stupca . '<br>';
     //echo '$broj_retka: ' . $broj_retka . '<br>';
-    if($polje[$broj_retka][$broj_stupca] == null)
-    {
+    if ($polje[$broj_retka][$broj_stupca] == null) {
       //echo '<br>Usao u drugi if brisanja!<br>';
       $polje_2[$broj_retka][$broj_stupca] = null;
       $polje_3[$broj_retka][$broj_stupca] = null;
@@ -224,23 +213,23 @@
         echo '<br>PROVJERA_BLOKA: ' . provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) . '<br>';
         echo '$polje[$i][$j]: ' . $polje[$i][$j] . '<br>';
         */
-        if($_SESSION['polje'][$i][$j] !== null){
+        if ($_SESSION['polje'][$i][$j] !== null) {
           //echo '$polje[$i][$j]' . $polje[$i][$j] . '<br>';
           dodaj_broj($polje_3, 2, $i, $j);
-        }
-        elseif(provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
-            provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-          $_SESSION['polje'][$i][$j] == null)
-        {
+        } elseif (
+          provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) &&
+          provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+          $_SESSION['polje'][$i][$j] == null
+        ) {
           //echo 'Drugi if: $polje[$i][$j] = ' . $polje[$i][$j] . '<br>';
           dodaj_broj($polje_3, 1, $i, $j);
-        }
-        elseif(!provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
-        !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
-          $_SESSION['polje'][$i][$j] == null) {
+        } elseif (
+          !provjera_stupca_retka($polje_2, $polje_2[$i][$j], $j, $i) ||
+          !provjera_bloka($polje_2, $polje_2[$i][$j], $j, $i) &&
+          $_SESSION['polje'][$i][$j] == null
+        ) {
           dodaj_broj($polje_3, 0, $i, $j);
-        }
-        else{
+        } else {
           dodaj_broj($polje_3, null, $i, $j);
         }
       }
@@ -251,7 +240,7 @@
   {
     for ($i = 0; $i < 6; $i++) {
       for ($j = 0; $j < 6; $j++) {
-        if($polje_3[$i][$j] == 0) return 0;
+        if ($polje_3[$i][$j] == 0) return 0;
       }
     }
     return 1;
@@ -284,15 +273,15 @@
           $class .= $isValid ? ' dodani_brojevi' : ' nevalidni_dodani_brojevi';
         }
 
-        if($i === 1 || $i === 3){
+        if ($i === 1 || $i === 3) {
           $class .= ' horizontalna_linija';
         }
-        if( $j === 2){
+        if ($j === 2) {
           $class .= ' vertikalna_linija';
         }
 
         if ($cellValue === null) {
-          ?>
+  ?>
           <input type="hidden" name="broj_retka" value="<?php echo $i; ?>">
           <input type="hidden" name="broj_stupca" value="<?php echo $j; ?>">
           <?php
@@ -305,60 +294,60 @@
       echo "</tr>";
     }
     echo '</table>';
-    ?>;
-    
-    <?php
-    echo '</form>';
-  }
+          ?>;
 
-
-  function ispis_tablice_2($polje_2)
-  {
-    echo '<table>';
-    for ($i = 0; $i < 6; $i++) {
-      echo "<tr>";
-      for ($j = 0; $j < 6; $j++) {
-        echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+        <?php
+        echo '</form>';
       }
-    }
-    echo '</table>';
-  }
 
-  function validNumbers($grid, $row, $col)
-  {
-    $valid = range(1, 6); // All numbers from 1 to 6 are considered valid by default
 
-    // Remove numbers already in the same row
-    for ($i = 0; $i < 6; $i++) {
-      if ($grid[$row][$i] !== null && in_array($grid[$row][$i], $valid)) {
-        unset($valid[array_search($grid[$row][$i], $valid)]);
-      }
-    }
-
-    // Remove numbers already in the same column
-    for ($i = 0; $i < 6; $i++) {
-      if ($grid[$i][$col] !== null && in_array($grid[$i][$col], $valid)) {
-        unset($valid[array_search($grid[$i][$col], $valid)]);
-      }
-    }
-
-    // Remove numbers already in the same 2x3 box
-    $boxRowStart = floor($row / 2) * 2;
-    $boxColStart = floor($col / 3) * 3;
-
-    for ($i = $boxRowStart; $i < $boxRowStart + 2; $i++) {
-      for ($j = $boxColStart; $j < $boxColStart + 3; $j++) {
-        if ($grid[$i][$j] !== null && in_array($grid[$i][$j], $valid)) {
-          unset($valid[array_search($grid[$i][$j], $valid)]);
+      function ispis_tablice_2($polje_2)
+      {
+        echo '<table>';
+        for ($i = 0; $i < 6; $i++) {
+          echo "<tr>";
+          for ($j = 0; $j < 6; $j++) {
+            echo "<td class='dodani_brojevi'>" . $polje_2[$i][$j] . "</td>";
+          }
         }
+        echo '</table>';
       }
-    }
 
-    return $valid;
-  }
+      function validNumbers($grid, $row, $col)
+      {
+        $valid = range(1, 6); // All numbers from 1 to 6 are considered valid by default
+
+        // Remove numbers already in the same row
+        for ($i = 0; $i < 6; $i++) {
+          if ($grid[$row][$i] !== null && in_array($grid[$row][$i], $valid)) {
+            unset($valid[array_search($grid[$row][$i], $valid)]);
+          }
+        }
+
+        // Remove numbers already in the same column
+        for ($i = 0; $i < 6; $i++) {
+          if ($grid[$i][$col] !== null && in_array($grid[$i][$col], $valid)) {
+            unset($valid[array_search($grid[$i][$col], $valid)]);
+          }
+        }
+
+        // Remove numbers already in the same 2x3 box
+        $boxRowStart = floor($row / 2) * 2;
+        $boxColStart = floor($col / 3) * 3;
+
+        for ($i = $boxRowStart; $i < $boxRowStart + 2; $i++) {
+          for ($j = $boxColStart; $j < $boxColStart + 3; $j++) {
+            if ($grid[$i][$j] !== null && in_array($grid[$i][$j], $valid)) {
+              unset($valid[array_search($grid[$i][$j], $valid)]);
+            }
+          }
+        }
+
+        return $valid;
+      }
 
 
-?>
+        ?>
 
 </body>
 
