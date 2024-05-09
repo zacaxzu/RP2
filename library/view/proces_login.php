@@ -43,8 +43,7 @@ function procesiraj_login()
     }
 }
 
-
-function crtaj_uspjesnoUlogiran()
+function crtaj_uspjesnoUlogiran($username)
 {
 ?>
     <!DOCTYPE html>
@@ -55,11 +54,14 @@ function crtaj_uspjesnoUlogiran()
         <title>Login</title>
     </head>
 
+    <?php require_once __DIR__ . '/_header.php'; ?>
+
     <body>
-        Čestitamo, uspješno ste se ulogirali!
+        Čestitamo, uspješno ste se ulogirali, <?php echo htmlspecialchars($username); ?>!
     </body>
 
     </html>
+    <?php require_once __DIR__ . '/_footer.php'; ?>
 <?php
 }
 ?>

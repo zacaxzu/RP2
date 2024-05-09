@@ -6,4 +6,4 @@
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<h1><?php echo $title; ?></h1>
+	<h1>Bla bla</h1>
