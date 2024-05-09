@@ -39,6 +39,8 @@ function crtaj_loginForma($message = '')
 function crtaj_uspjesnoUlogiran()
 {
 ?>
+	<?php require_once __DIR__ . '/view/_header.php'; ?>
+
 	<!DOCTYPE html>
 	<html>
 
@@ -47,12 +49,13 @@ function crtaj_uspjesnoUlogiran()
 		<title>Login</title>
 		<link rel="stylesheet" href="login.css" />
 	</head>
-	
+
 	<body>
 		Čestitam uspješno ste se ulogirali <?php echo htmlspecialchars($_POST['username']); ?>!
 	</body>
 
 	</html>
+	<?php require_once __DIR__ . '/view/_footer.php'; ?>
 <?php
 }
 
