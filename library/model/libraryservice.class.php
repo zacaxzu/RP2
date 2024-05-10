@@ -8,20 +8,20 @@ class LibraryService
 {
     function getAllUsers()
     {
-        $db = DB::getConnection();
-        $st = $db->prepare('SELECT * FROM users');
+        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $st = $db->prepare('SELECT * FROM dz2_users');
         $st->execute();
 
         $users = [];
         while($row = $st->fetch())
         {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['password']);
+            $user = new User($row['id'], $row['username'], $row['password_hash'], $row['total_paid'], $row['total_debt'], $row['email']);
             $users[] = $user;
         }
 
         return $users;
     }
-
+    /*
     function getAllBooks()
     {
         $db = DB::getConnection();
@@ -52,6 +52,7 @@ class LibraryService
         $bookList = $ls->getBooksByAuthor($author);
 
     }
+    */
 }
 
 ?>

@@ -18,8 +18,8 @@
 				<a class="navbar-brand" href="#">Balance</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Overview</a></li>
-				<li><a href="#">Expenses</a></li>
+				<li class="active"><a href="index.php?rt=users/index">Overview</a></li>
+				<li><a href="index.php?rt=expences/index">Expenses</a></li>
 				<li><a href="#">New expense</a></li>
 				<li><a href="#">Settle up!</a></li>
 			</ul>
