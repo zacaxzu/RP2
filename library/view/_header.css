@@ -25,3 +25,16 @@
     background-color: #04AA6D;
     color: white;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: 10%;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}

@@ -1,4 +1,5 @@
 <?php require_once __DIR__ . '/_header.php'; ?>
+<link rel="stylesheet" href="/users_index.css">
 
 <table>
     <tr>
@@ -8,11 +9,9 @@
     <?php
     foreach ($userList as $user) {
         echo '<tr>';
-        echo '<td>' . $user->username . '</td>';
-        echo '<td>' .  $user->total_paid - $user->total_debt . '</td>';
+        echo '<td><a href="balance.php?rt=users/history&id_user=' . $user->id . '">' . $user->username . '</a></td>';
+        echo '<td>' .  $user->total_paid - $user->total_debt . ' &euro;</td>';
         echo '</tr>';
     }
     ?>
 </table>
-
-<?php require_once __DIR__ . '/_footer.php'; ?>

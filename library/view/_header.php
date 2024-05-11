@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf8">
-	<title>Druga zadaća</title>
+	<title>Balance</title>
 	<link rel="stylesheet" href="/view/_header.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -18,10 +18,10 @@
 				<a class="navbar-brand" href="#">Balance</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="index.php?rt=users/index">Overview</a></li>
-				<li><a href="index.php?rt=expences/index">Expenses</a></li>
-				<li><a href="#">New expense</a></li>
-				<li><a href="#">Settle up!</a></li>
+				<li class="active"><a href="balance.php?rt=users/index">Overview</a></li>
+				<li><a href="balance.php?rt=expences/index">Expenses</a></li>
+				<li><a href="balance.php?rt=newexpences/index">New expense</a></li>
+				<li><a href="balance.php?rt=settleup/index">Settle up!</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a>Hello <?php echo htmlspecialchars($_POST['username']); ?>! </a></li>
