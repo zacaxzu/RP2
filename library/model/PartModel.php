@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__) . '/app/database/db.class.php';
 
-class ExpenseModel
+class PartModel
 {
     public function getAllPartsByUserId($id_user)
     {

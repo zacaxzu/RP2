@@ -6,6 +6,7 @@ require_once __DIR__ . '/expense.class.php';
 require_once __DIR__ . '/part.class.php';
 require_once __DIR__ . '/partexpense.class.php';
 require_once __DIR__ . '/userexpense.class.php';
+require_once __DIR__ . '/userpartexpense.class.php';
 
 class LibraryService
 {
@@ -24,9 +25,43 @@ class LibraryService
 
         return $users;
     }
-
+    /*
     function getAllExpensesByUserId($userId)
     {
+        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $st = $db->prepare('SELECT e.id 
+                            AS expense_id, e.id_user 
+                            AS expense_user_id, e.description 
+                            AS expense_description, e.cost 
+                            AS expense_cost, e.date 
+                            AS expense_date, p.id 
+                            AS part_id, p.id_user 
+                            AS part_user_id, p.cost 
+                            AS part_cost, u.username
+                            FROM dz2_parts p
+                            JOIN dz2_expenses e ON p.id_expense = e.id
+                            JOIN dz2_users u ON e.id_user = u.id
+                            WHERE p.id_user = :userId');
+        $st->execute(array('userId' => $userId));
+
+        $userPartExpenses = [];
+        while ($row = $st->fetch()) {
+            $userPartExpense = new UserPartExpense(
+                $row['expense_user_id'],
+                $row['part_id'],
+                $row['expense_id'],
+                $row['expense_cost'],
+                $row['part_cost'],
+                $row['username'],
+                $row['expense_description'],
+                $row['expense_date']
+            );
+            $userPartExpenses[] = $userPartExpense;
+        }
+
+        return $userPartExpenses;
+
+        /*
         $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
         $st = $db->prepare('SELECT * FROM dz2_expenses WHERE id_user = :userId');
         $st->execute(array('userId' => $userId));
@@ -38,8 +73,9 @@ class LibraryService
         }
 
         return $expenses;
-    }
-
+        */
+    //}
+    
     function getAllExpenses()
     {
         $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
@@ -59,18 +95,46 @@ class LibraryService
         return $expenses;
     }
 
+    function getAllExpensesByUserId($userId)
+    {
+        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $sql = "SELECT e.id AS expense_id, e.id_user, e.cost, e.description, e.date, u.username 
+            FROM dz2_expenses e 
+            JOIN dz2_users u 
+            ON e.id_user = u.id
+            WHERE e.id_user = :userId";
+
+        $st = $db->prepare($sql);
+        $st->execute(array(':userId' => $userId));
+
+        $expenses = [];
+        while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+            $expense = new UserExpense($row['expense_id'], $row['id_user'], $row['username'], $row['cost'], $row['description'], $row['date']);
+            $expenses[] = $expense;
+        }
+        return $expenses;
+    }
+
+
     function getAllPartsByUserId($userId)
     {
         $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
-        $st = $db->prepare('SELECT * FROM dz2_parts WHERE id_user = :userId');
-        $st->execute(array('userId' => $userId));
+        $sql = "SELECT p.id AS id_part, p.id_expense, p.id_user, p.cost AS part_cost,
+                e.id AS expense_id, e.cost AS expense_cost, e.description, e.date,
+                u.username
+                FROM dz2_parts p
+                JOIN dz2_expenses e ON p.id_expense = e.id
+                JOIN dz2_users u ON e.id_user = u.id
+                WHERE p.id_user = :userId";
+
+        $st = $db->prepare($sql);
+        $st->execute(array(':userId' => $userId));
 
         $parts = [];
-        while ($row = $st->fetch()) {
-            $part = new Part($row['id'], $row['id_expense'], $row['id_user'], $row['cost']);
+        while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+            $part = new UserPartExpense($row['id_user'], $row['id_part'], $row['id_expense'], $row['expense_cost'], $row['part_cost'], $row['username'], $row['description'], $row['date']);
             $parts[] = $part;
         }
-
         return $parts;
     }
 
@@ -85,13 +149,13 @@ class LibraryService
                         WHERE p.id_expense = :expense_id');
         $st->execute(array('expense_id' => $expenseId));
 
-        $expensesDescriptions = [];
+        $usersPartsExpenses = [];
         while ($row = $st->fetch()) {
-            $expensesDescription = new PartExpense($row['id'], $row['id_expense'], $row['id_user'], $row['cost'], $row['description'], $row['date']);
-            $expensesDescriptions[] = $expensesDescription;
+            $usersPartsExpense = new UserPartExpense($row['id_user'], $row['id_part'], $row['id_expense'], $row['expense_cost'], $row['part_cost'], $row['username'], $row['description'], $row['date']);
+            $usersPartsExpenses[] = $usersPartsExpense;
         }
-
-        return $expensesDescriptions;
+// $id_user, $id_part, $id_expense, $expense_cost, $part_cost, $username, $description, $date
+        return $usersPartsExpenses;
     }
     
 /*
