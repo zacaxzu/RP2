@@ -2,7 +2,7 @@
 
 // U db_settings.php su definirani $db_base, $db_user, $db_pass
 //require_once 'zadatak5_db.php';
-require_once 'zadatak5_html.php';
+require_once 'view/zadatak5_html.php';
 require_once 'app/database/db.class.php';
 
 function procesiraj_login()

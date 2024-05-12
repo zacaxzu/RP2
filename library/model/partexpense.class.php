@@ -1,20 +1,16 @@
 <?php
-class Expense
+class PartExpense
 {
-    protected $id, $id_user, $cost, $description, $date;
+    protected $id, $id_expense, $id_user, $cost, $description, $date;
 
-    function __construct($id, $id_user, $cost, $description, $date)
+    function __construct($id, $id_expense, $id_user, $cost, $description, $date)
     {
         $this->id = $id;
+        $this->id_expense = $id_expense;
         $this->id_user = $id_user;
         $this->cost = $cost;
         $this->description = $description;
         $this->date = $date;
-    }
-
-    function getId()
-    {
-        return $this->id;
     }
 
     function __get($property)

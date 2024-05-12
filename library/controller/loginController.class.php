@@ -1,5 +1,6 @@
 <?php
 require_once 'model/UserModel.php';
+require_once __DIR__ . '/../model/libraryservice.class.php';
 
 class LoginController
 {

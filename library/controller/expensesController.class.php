@@ -8,10 +8,11 @@ class ExpensesController
     {
         $ls = new LibraryService();
 
-        $userId = $_GET['id_user'];
-        $userExpenses = $ls->getAllExpensesByUserId($userId);
+        $userExpenses = $ls->getAllExpenses();
         //var_dump($userExpenses); // Check the fetched data
 
         require_once __DIR__ . '/../view/expenses_index.php';
     }
+
+    
 };

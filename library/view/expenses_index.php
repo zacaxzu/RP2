@@ -3,13 +3,15 @@
 <table>
     <tr>
         <th>Ime</th>
-        <th>Total debt</th>
+        <th>Description</th>
+        <th>Cost</th>
     </tr>
     <?php
-    foreach ($userList as $user) {
+    foreach ($userExpenses as $user) {
         echo '<tr>';
         echo '<td>' . $user->username . '</td>';
-        echo '<td>' . $user->total_debt . '</td>';
+        echo '<td>' . $user->description . '</td>';
+        echo '<td>' . $user->cost . '</td>';
         echo '</tr>';
     }
     ?>

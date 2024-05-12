@@ -19,7 +19,7 @@
 			</div>
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="balance.php?rt=users/index">Overview</a></li>
-				<li><a href="balance.php?rt=expences/index">Expenses</a></li>
+				<li><a href="balance.php?rt=expenses/index">Expenses</a></li>
 				<li><a href="balance.php?rt=newexpences/index">New expense</a></li>
 				<li><a href="balance.php?rt=settleup/index">Settle up!</a></li>
 			</ul>
