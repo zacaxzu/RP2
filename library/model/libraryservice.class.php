@@ -25,6 +25,21 @@ class LibraryService
 
         return $users;
     }
+
+    function getUserByUserId($userId)
+    {
+        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $st = $db->prepare('SELECT * FROM dz2_users
+                        WHERE id = :userId');
+        $st->execute(array(':userId' => $userId));
+
+        $row = $st->fetch(PDO::FETCH_ASSOC);
+
+        // Assuming 'User' is your User class, adjust as necessary
+        $user = new User($row['id'], $row['username'], $row['password_hash'], $row['total_paid'], $row['total_debt'], $row['email']);
+
+        return $user;
+    }
     /*
     function getAllExpensesByUserId($userId)
     {

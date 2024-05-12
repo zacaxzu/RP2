@@ -2,8 +2,7 @@
 <table>
     <?php
     echo '<tr>';
-    echo '<td><b>' . 'User ID' . '<b></td>';
-    echo '<td><b>' . 'Username' . '<b></td>';
+    echo '<td>' . $user->username . '</td>';
     echo '<td><b>' .  'Expense Description' . '<b></td>';
     echo '<td><b>' .  'Cost' . '<b></td>';
     echo '</tr>';
@@ -11,28 +10,31 @@
     foreach ($userExpenses as $expense) {
 
         echo '<tr>';
-        echo '<td>' . $expense->id_user . '</td>';
-        echo '<td>' . $expense->username . '</td>';
+        echo '<td>' . '' . '</td>';
         echo '<td>' . $expense->description . '</td>';
         echo '<td>' . '+' . $expense->cost . ' &euro;</td>';
         echo '</tr>';
     }
 
-    echo '<tr>';
-    echo '<td><b>' . 'User ID' . '<b></td>';
-    echo '<td><b>' . 'Expense ID' . '<b></td>';
-    echo '<td><b>' .  'Expense Description' . '<b></td>';
-    echo '<td><b>' .  'Cost' . '<b></td>';
-    echo '</tr>';
-
     foreach ($partExpenses as $part) {
 
         echo '<tr>';
-        echo '<td>' . $part->id_user . '</td>';
-        echo '<td>' . $part->id_expense . '</td>';
+        echo '<td>' . '' . '</td>';
         echo '<td>' . $part->description . '</td>';
         echo '<td>' . '-' . $part->part_cost . ' &euro;</td>';
         echo '</tr>';
     }
+
+    echo '<tr>';
+    echo '<td><b>' . '' . '<b></td>';
+    echo '<td><b>' .  '' . '<b></td>';
+    echo '<td><b>' .  'Total' . '<b></td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<td>' . '' . '</td>';
+    echo '<td>' . '' . '</td>';
+    echo '<td>' . $user->total_paid - $user->total_debt . ' &euro;</td>';
+    echo '</tr>';
     ?>
 </table>

@@ -22,6 +22,7 @@ class UsersController
 			$ls = new LibraryService();
 			$userExpenses = $ls->getAllExpensesByUserId($userId);
 			$partExpenses = $ls ->getAllPartsByUserId($userId);
+			$user = $ls->getUserByUserId($userId);
 
 			require_once __DIR__ . '/../view/user_expenses.php';
 		}
