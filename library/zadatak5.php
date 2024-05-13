@@ -7,6 +7,7 @@ require_once 'app/database/db.class.php';
 
 function procesiraj_login()
 {
+	session_start();
 	// Check if username and password are provided
 	if (!isset($_POST["username"]) || !isset($_POST["password"])) {
 		crtaj_loginForma();
@@ -34,7 +35,8 @@ function procesiraj_login()
 
 			if (password_verify($_POST['password'], $hash)) {
 				// Password is correct, display successful login message
-				crtaj_uspjesnoUlogiran($_POST['username']);
+				$_SESSION['username'] = $_POST['username'];
+				crtaj_uspjesnoUlogiran($_SESSION['username']);
 				return;
 			} else {
 				// Password is incorrect, display appropriate message
@@ -100,6 +102,8 @@ function procesiraj_novi()
 }
 
 */
+
+
 
 
 // ---

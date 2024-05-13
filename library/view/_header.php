@@ -1,3 +1,8 @@
+<?php
+// Start the session
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -20,12 +25,14 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="balance.php?rt=users/index">Overview</a></li>
 				<li><a href="balance.php?rt=expenses/index">Expenses</a></li>
-				<li><a href="balance.php?rt=newexpences/index">New expense</a></li>
+				<li><a href="balance.php?rt=newexpenses/index">New expense</a></li>
 				<li><a href="balance.php?rt=settleup/index">Settle up!</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a>Hello <?php echo htmlspecialchars($_POST['username']); ?>! </a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+				<li><a>Hello <?php echo htmlspecialchars($_SESSION['username']); ?>! </a></li>
+				<form method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
+					<li><button type="submit" name="gumb" value="logout" class="btn btn-link navbar-btn">Logout</button></li>
+				</form>
 			</ul>
 		</div>
 	</nav>

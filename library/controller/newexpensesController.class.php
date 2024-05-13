@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../model/libraryservice.class.php';
 
-class NewexpencesController
+class NewexpensesController
 {
     public function index()
     {
