@@ -17,8 +17,7 @@ class LibraryService
         $st->execute();
 
         $users = [];
-        while($row = $st->fetch())
-        {
+        while ($row = $st->fetch()) {
             $user = new User($row['id'], $row['username'], $row['password_hash'], $row['total_paid'], $row['total_debt'], $row['email']);
             $users[] = $user;
         }
@@ -90,7 +89,7 @@ class LibraryService
         return $expenses;
         */
     //}
-    
+
     function getAllExpenses()
     {
         $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
@@ -130,7 +129,6 @@ class LibraryService
         return $expenses;
     }
 
-
     function getAllPartsByUserId($userId)
     {
         $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
@@ -169,11 +167,11 @@ class LibraryService
             $usersPartsExpense = new UserPartExpense($row['id_user'], $row['id_part'], $row['id_expense'], $row['expense_cost'], $row['part_cost'], $row['username'], $row['description'], $row['date']);
             $usersPartsExpenses[] = $usersPartsExpense;
         }
-// $id_user, $id_part, $id_expense, $expense_cost, $part_cost, $username, $description, $date
+        // $id_user, $id_part, $id_expense, $expense_cost, $part_cost, $username, $description, $date
         return $usersPartsExpenses;
     }
-    
-/*
+
+    /*
     function search()
     {
         $title = 'Pretzraživanje knjiga po autoru';
@@ -188,7 +186,110 @@ class LibraryService
         $bookList = $ls->getBooksByAuthor($author);
 
     }
-    */
+*/
+
+    function procesiraj_login()
+    {
+        session_start();
+        // Check if username and password are provided
+        if (!isset($_POST["username"]) || !isset($_POST["password"])) {
+            crtaj_loginForma();
+            return;
+        }
+
+        // Get database connection
+        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+
+        try {
+            // Prepare and execute the SQL query to select password based on username
+            $st = $db->prepare('SELECT password_hash FROM dz2_users WHERE username=:username');
+            $st->execute(array(':username' => $_POST["username"]));
+
+            // Fetch the result row
+            $row = $st->fetch();
+
+            if ($row === false) {
+                // User does not exist, display appropriate message
+                crtaj_loginForma('Ne postoji korisnik s tim imenom.');
+                return;
+            } else {
+                // User exists, verify password
+                $hash = $row['password_hash'];
+
+                if (password_verify($_POST['password'], $hash)) {
+                    // Password is correct, display successful login message
+                    $_SESSION['username'] = $_POST['username'];
+                    header("Location: /balance.php?rt=users/index"); // Redirect to the appropriate view
+                    exit;
+                } else {
+                    // Password is incorrect, display appropriate message
+                    crtaj_loginForma('Postoji korisnik, ali lozinka nije ispravna.');
+                    return;
+                }
+            }
+        } catch (PDOException $e) {
+            // Error occurred, display error message
+            crtaj_loginForma('Greška prilikom provjere korisnika: ' . $e->getMessage());
+            return;
+        }
+    }
+
+    function crtaj_loginForma($message = '')
+    {
+    ?>
+        <!DOCTYPE html>
+        <html>
+
+        <head>
+            <meta charset="utf8" />
+            <title>Login</title>
+        </head>
+
+        <body>
+            <form method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
+                Korisničko ime:
+                <input type="text" name="username" />
+                <br />
+                Password:
+                <input type="password" name="password" />
+                <br />
+                <button type="submit" name="gumb" value="login">Ulogiraj se!</button>
+                <button type="submit" name="gumb" value="novi">Stvori novog korisnika!</button>
+            </form>
+
+            <?php
+            if ($message !== '')
+                echo '<p>' . $message . '</p>';
+            ?>
+        </body>
+
+        </html>
+    <?php
+    }
+   
+    function crtaj_uspjesnoUlogiran()
+    {
+    
+        require_once __DIR__ . '/_header.php'; 
+        ?>
+
+        <!DOCTYPE html>
+        <html>
+
+        <head>
+            <meta charset="utf8" />
+            <title>Login</title>
+            <link rel="stylesheet" href="login.css" />
+        </head>
+
+        <body>
+            Čestitam uspješno ste se ulogirali <?php echo htmlspecialchars($_POST['username']); ?>!
+        </body>
+
+        </html>
+        <?php require_once __DIR__ . '/_footer.php'; ?>
+    <?php
+    }
 }
 
 ?>

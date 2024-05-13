@@ -6,6 +6,16 @@ class LoginController
 {
     public function index()
     {
+        $ls = new LibraryService();
+
+        if (isset($_POST["gumb"]) && $_POST["gumb"] === "login")
+            $ls->procesiraj_login();
+        //else if( isset( $_POST["gumb" ] ) && $_POST["gumb"] === "novi" )
+        //	procesiraj_novi();
+        else
+            $ls->crtaj_loginForma();
+
+        /*
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -24,5 +34,6 @@ class LoginController
 
         // Load the login view
         require_once dirname(__DIR__) . '/app/database/db.class.php';
+        */
     }
 }

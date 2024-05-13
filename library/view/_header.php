@@ -30,9 +30,11 @@ session_start();
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a>Hello <?php echo htmlspecialchars($_SESSION['username']); ?>! </a></li>
-				<form method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
-					<li><button type="submit" name="gumb" value="logout" class="btn btn-link navbar-btn">Logout</button></li>
-				</form>
+				<li>
+					<form method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
+						<button type="submit" name="gumb" value="logout" class="btn btn-link navbar-btn">Logout</button>
+					</form>
+				</li>
 			</ul>
 		</div>
 	</nav>

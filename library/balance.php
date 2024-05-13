@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_GET['rt'])) {
-    $con = 'users';
+    $con = 'login';
     $action = 'index';
 } else {
     $rt = $_GET['rt'];
