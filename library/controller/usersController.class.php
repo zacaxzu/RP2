@@ -27,7 +27,6 @@ class UsersController
 			require_once __DIR__ . '/../view/user_expenses.php';
 		}
 	}
-
 }; 
 
 ?>

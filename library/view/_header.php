@@ -20,7 +20,7 @@ session_start();
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Balance</a>
+				<a class="navbar-brand" href="balance.php?rt=login/home">Balance</a>
 			</div>
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="balance.php?rt=users/index">Overview</a></li>
@@ -31,8 +31,8 @@ session_start();
 			<ul class="nav navbar-nav navbar-right">
 				<li><a>Hello <?php echo htmlspecialchars($_SESSION['username']); ?>! </a></li>
 				<li>
-					<form method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
-						<button type="submit" name="gumb" value="logout" class="btn btn-link navbar-btn">Logout</button>
+					<form method="post" action="balance.php?rt=login/logout">
+						<button type="submit" name="logout" value="logout" class="btn btn-link navbar-btn">Logout</button>
 					</form>
 				</li>
 			</ul>

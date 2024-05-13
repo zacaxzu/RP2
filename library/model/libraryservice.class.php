@@ -171,30 +171,16 @@ class LibraryService
         return $usersPartsExpenses;
     }
 
-    /*
-    function search()
-    {
-        $title = 'Pretzraživanje knjiga po autoru';
-        require_once __DIR__ . '/::/view/books_search.php';
-    }
-
-    function searchResults()
-    {
-        $author = $_POST['author'];
-
-        $ls = new LibraryService();
-        $bookList = $ls->getBooksByAuthor($author);
-
-    }
-*/
-
     function procesiraj_login()
     {
         session_start();
+        foreach ($_SESSION as $key => $value) {
+            echo "Session variable '$key' has the value '$value'.<br>";
+        }
         // Check if username and password are provided
         if (!isset($_POST["username"]) || !isset($_POST["password"])) {
-            crtaj_loginForma();
-            return;
+            header("Location: /balance.php?rt=login/index");
+            exit;
         }
 
         // Get database connection
@@ -210,8 +196,9 @@ class LibraryService
 
             if ($row === false) {
                 // User does not exist, display appropriate message
-                crtaj_loginForma('Ne postoji korisnik s tim imenom.');
-                return;
+                $errorMessage = urlencode('Ne postoji korisnik s tim imenom.');
+                header("Location: /balance.php?rt=login/index&error=$errorMessage");
+                exit;
             } else {
                 // User exists, verify password
                 $hash = $row['password_hash'];
@@ -219,77 +206,30 @@ class LibraryService
                 if (password_verify($_POST['password'], $hash)) {
                     // Password is correct, display successful login message
                     $_SESSION['username'] = $_POST['username'];
-                    header("Location: /balance.php?rt=users/index"); // Redirect to the appropriate view
+                    header("Location: /balance.php?rt=login/home"); // Redirect to the appropriate view
                     exit;
                 } else {
                     // Password is incorrect, display appropriate message
-                    crtaj_loginForma('Postoji korisnik, ali lozinka nije ispravna.');
-                    return;
+                    $errorMessage = urlencode('Korisnik postoji no lozinka je pogrešna.');
+                    header("Location: /balance.php?rt=login/index&error=$errorMessage");
+                    exit;
                 }
             }
         } catch (PDOException $e) {
             // Error occurred, display error message
-            crtaj_loginForma('Greška prilikom provjere korisnika: ' . $e->getMessage());
-            return;
+            header("Location: /balance.php?rt=login/index");
+            exit;
         }
     }
 
-    function crtaj_loginForma($message = '')
+    function logout()
     {
-    ?>
-        <!DOCTYPE html>
-        <html>
-
-        <head>
-            <meta charset="utf8" />
-            <title>Login</title>
-        </head>
-
-        <body>
-            <form method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
-                Korisničko ime:
-                <input type="text" name="username" />
-                <br />
-                Password:
-                <input type="password" name="password" />
-                <br />
-                <button type="submit" name="gumb" value="login">Ulogiraj se!</button>
-                <button type="submit" name="gumb" value="novi">Stvori novog korisnika!</button>
-            </form>
-
-            <?php
-            if ($message !== '')
-                echo '<p>' . $message . '</p>';
-            ?>
-        </body>
-
-        </html>
-    <?php
+        session_unset();
+        session_destroy();
+        header("Location: /balance.php?rt=login/index");
+        exit;
     }
-   
-    function crtaj_uspjesnoUlogiran()
-    {
-    
-        require_once __DIR__ . '/_header.php'; 
-        ?>
 
-        <!DOCTYPE html>
-        <html>
-
-        <head>
-            <meta charset="utf8" />
-            <title>Login</title>
-            <link rel="stylesheet" href="login.css" />
-        </head>
-
-        <body>
-            Čestitam uspješno ste se ulogirali <?php echo htmlspecialchars($_POST['username']); ?>!
-        </body>
-
-        </html>
-        <?php require_once __DIR__ . '/_footer.php'; ?>
-    <?php
-    }
 }
 
 ?>

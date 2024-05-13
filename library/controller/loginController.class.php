@@ -10,30 +10,24 @@ class LoginController
 
         if (isset($_POST["gumb"]) && $_POST["gumb"] === "login")
             $ls->procesiraj_login();
-        //else if( isset( $_POST["gumb" ] ) && $_POST["gumb"] === "novi" )
-        //	procesiraj_novi();
         else
-            $ls->crtaj_loginForma();
+            require_once __DIR__ . '/../view/login_forma.php';
+    }
 
-        /*
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+    public function home()
+    {
+        require_once __DIR__ . '/../view/home_html.php';
+    }
 
-            $userModel = new UserModel();
-            $user = $userModel->getUserByUsername($username);
-
-            if ($user && password_verify($password, $user['password'])) {
-                // Login successful
-                echo "Login successful!";
-            } else {
-                // Login failed
-                echo "Incorrect username or password";
-            }
+    public function logout()
+    {
+        $ls = new LibraryService();
+        
+        // Check if logout button is clicked
+        if (isset($_POST['logout'])) {
+            $ls->logout();
+            var_dump($_POST['logout']);
+            header("Location: /balance.php?rt=login/index");
         }
-
-        // Load the login view
-        require_once dirname(__DIR__) . '/app/database/db.class.php';
-        */
     }
 }
