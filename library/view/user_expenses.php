@@ -34,7 +34,7 @@
     echo '<tr>';
     echo '<td>' . '' . '</td>';
     echo '<td>' . '' . '</td>';
-    echo '<td>' . $user->total_paid - $user->total_debt . ' &euro;</td>';
+    echo '<td>' . $predznak . $total . ' &euro;</td>';
     echo '</tr>';
     ?>
 </table>

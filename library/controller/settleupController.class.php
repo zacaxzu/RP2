@@ -8,9 +8,10 @@ class SettleupController
     {
         $ls = new LibraryService();
 
-        $title = 'Popis svih korisnika knjižnice';
-        $userList = $ls->getAllUsers();
+        // Get the settle up transactions
+        $transactions = $ls->settleUpTransactions();
 
+        // Pass the transactions to the view
         require_once __DIR__ . '/../view/settleup_index.php';
     }
 };

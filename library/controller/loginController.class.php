@@ -9,7 +9,10 @@ class LoginController
         $ls = new LibraryService();
 
         if (isset($_POST["gumb"]) && $_POST["gumb"] === "login")
-            $ls->procesiraj_login();
+        {
+            setcookie('username', $_POST["username"], time() + 3600, '/');
+            return $ls->procesiraj_login();
+        }
         else
             require_once __DIR__ . '/../view/login_forma.php';
     }
@@ -21,13 +24,9 @@ class LoginController
 
     public function logout()
     {
-        $ls = new LibraryService();
-        
-        // Check if logout button is clicked
-        if (isset($_POST['logout'])) {
-            $ls->logout();
-            var_dump($_POST['logout']);
-            header("Location: /balance.php?rt=login/index");
-        }
+        setcookie('username', '', time() - 3600, '/');
+
+        // Redirect the user to the login page
+        require_once __DIR__ . '/../view/login_forma.php';
     }
 }

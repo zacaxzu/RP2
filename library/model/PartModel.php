@@ -5,7 +5,7 @@ class PartModel
 {
     public function getAllPartsByUserId($id_user)
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $stmt = $db->prepare("SELECT * FROM dz2_parts WHERE id_user = ?");
         $stmt->execute([$id_user]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Use fetchAll instead of fetch

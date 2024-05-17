@@ -29,7 +29,7 @@ session_start();
 				<li><a href="balance.php?rt=settleup/index">Settle up!</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a>Hello <?php echo htmlspecialchars($_SESSION['username']); ?>! </a></li>
+				<li><a>Hello <?php echo htmlspecialchars($_COOKIE['username']); ?>! </a></li>
 				<li>
 					<form method="post" action="balance.php?rt=login/logout">
 						<button type="submit" name="logout" value="logout" class="btn btn-link navbar-btn">Logout</button>

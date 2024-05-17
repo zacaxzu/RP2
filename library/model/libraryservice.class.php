@@ -12,7 +12,7 @@ class LibraryService
 {
     function getAllUsers()
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $st = $db->prepare('SELECT * FROM dz2_users');
         $st->execute();
 
@@ -27,7 +27,7 @@ class LibraryService
 
     function getUserByUserId($userId)
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $st = $db->prepare('SELECT * FROM dz2_users
                         WHERE id = :userId');
         $st->execute(array(':userId' => $userId));
@@ -39,60 +39,10 @@ class LibraryService
 
         return $user;
     }
-    /*
-    function getAllExpensesByUserId($userId)
-    {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
-        $st = $db->prepare('SELECT e.id 
-                            AS expense_id, e.id_user 
-                            AS expense_user_id, e.description 
-                            AS expense_description, e.cost 
-                            AS expense_cost, e.date 
-                            AS expense_date, p.id 
-                            AS part_id, p.id_user 
-                            AS part_user_id, p.cost 
-                            AS part_cost, u.username
-                            FROM dz2_parts p
-                            JOIN dz2_expenses e ON p.id_expense = e.id
-                            JOIN dz2_users u ON e.id_user = u.id
-                            WHERE p.id_user = :userId');
-        $st->execute(array('userId' => $userId));
-
-        $userPartExpenses = [];
-        while ($row = $st->fetch()) {
-            $userPartExpense = new UserPartExpense(
-                $row['expense_user_id'],
-                $row['part_id'],
-                $row['expense_id'],
-                $row['expense_cost'],
-                $row['part_cost'],
-                $row['username'],
-                $row['expense_description'],
-                $row['expense_date']
-            );
-            $userPartExpenses[] = $userPartExpense;
-        }
-
-        return $userPartExpenses;
-
-        /*
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
-        $st = $db->prepare('SELECT * FROM dz2_expenses WHERE id_user = :userId');
-        $st->execute(array('userId' => $userId));
-
-        $expenses = [];
-        while ($row = $st->fetch()) {
-            $expense = new Expense($row['id'], $row['id_user'], $row['cost'], $row['description'], $row['date']);
-            $expenses[] = $expense;
-        }
-
-        return $expenses;
-        */
-    //}
 
     function getAllExpenses()
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $sql = "SELECT e.id 
                 AS expense_id, e.id_user, e.cost, e.description, e.date, u.username 
                 FROM dz2_expenses e 
@@ -111,7 +61,7 @@ class LibraryService
 
     function getAllExpensesByUserId($userId)
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $sql = "SELECT e.id AS expense_id, e.id_user, e.cost, e.description, e.date, u.username 
             FROM dz2_expenses e 
             JOIN dz2_users u 
@@ -131,7 +81,7 @@ class LibraryService
 
     function getAllPartsByUserId($userId)
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $sql = "SELECT p.id AS id_part, p.id_expense, p.id_user, p.cost AS part_cost,
                 e.id AS expense_id, e.cost AS expense_cost, e.description, e.date,
                 u.username
@@ -153,7 +103,7 @@ class LibraryService
 
     function getExpenseDescriptionByExpenseId($expenseId)
     {
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
         $st = $db->prepare('SELECT p.*, e.description 
                         AS expense_description 
                         FROM dz2_parts p 
@@ -173,10 +123,6 @@ class LibraryService
 
     function procesiraj_login()
     {
-        session_start();
-        foreach ($_SESSION as $key => $value) {
-            echo "Session variable '$key' has the value '$value'.<br>";
-        }
         // Check if username and password are provided
         if (!isset($_POST["username"]) || !isset($_POST["password"])) {
             header("Location: /balance.php?rt=login/index");
@@ -184,7 +130,7 @@ class LibraryService
         }
 
         // Get database connection
-        $db = DB::getConnection('rp2.studenti.math.hr', 'baca', 'student', 'pass.mysql');
+        $db = DB::getConnection();
 
         try {
             // Prepare and execute the SQL query to select password based on username
@@ -202,12 +148,16 @@ class LibraryService
             } else {
                 // User exists, verify password
                 $hash = $row['password_hash'];
-
+                
                 if (password_verify($_POST['password'], $hash)) {
                     // Password is correct, display successful login message
-                    $_SESSION['username'] = $_POST['username'];
-                    header("Location: /balance.php?rt=login/home"); // Redirect to the appropriate view
-                    exit;
+                    //$_SESSION['username'] = $_POST['username'];
+                    /*setcookie( 'login', $_POST['username'] . ',' . md5( $_POST['username' ] . $secret_word ) );
+                    */
+                    setcookie('username', $_POST["username"], time() + 3600, '/');
+                    $od = new LoginController();
+                    $od->home();
+                    return 1;
                 } else {
                     // Password is incorrect, display appropriate message
                     $errorMessage = urlencode('Korisnik postoji no lozinka je pogrešna.');
@@ -222,14 +172,133 @@ class LibraryService
         }
     }
 
-    function logout()
+    public function addNewExpense($description, $cost, $userId, $selectedUsers)
     {
-        session_unset();
-        session_destroy();
-        header("Location: /balance.php?rt=login/index");
-        exit;
+        $dateTime = date('Y-m-d H:i:s');
+
+        // Get database connection
+        $db = DB::getConnection();
+
+        try {
+            // Start a transaction
+            $db->beginTransaction();
+
+            // Insert the new expense into the expenses table
+            $st = $db->prepare('INSERT INTO dz2_expenses (id_user, description, cost, date) VALUES (:userId, :description, :cost, :dateTime)');
+            $st->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $st->bindValue(':description', $description, PDO::PARAM_STR);
+            $st->bindValue(':cost', $cost, PDO::PARAM_INT);
+            $st->bindValue(':dateTime', $dateTime, PDO::PARAM_STR);
+            $st->execute();
+            $expenseId = $db->lastInsertId(); // Get the ID of the newly inserted expense
+
+            // Calculate the cost per user
+            $numUsers = count($selectedUsers); // Including the logged-in user
+            $costPerUser = $cost / $numUsers;
+
+            // Update the logged-in user's total_paid
+            $st = $db->prepare('UPDATE dz2_users SET total_paid = total_paid + :cost WHERE id = :userId');
+            $st->bindValue(':cost', $cost, PDO::PARAM_INT);
+            $st->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $st->execute();
+
+            /*
+            // Update the logged-in user's total_debt
+            $st = $db->prepare('UPDATE dz2_users SET total_debt = total_debt - :costPerUser WHERE id = :userId');
+            $st->bindValue(':costPerUser', $costPerUser, PDO::PARAM_INT);
+            $st->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $st->execute();
+            */
+            /*
+            // Insert the association between the expense and the logged-in user into the parts table
+            $st = $db->prepare('INSERT INTO dz2_parts (id_expense, id_user, cost) VALUES (:expenseId, :userId, :cost)');
+            $st->bindValue(':expenseId', $expenseId, PDO::PARAM_INT);
+            $st->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $st->bindValue(':cost', $cost, PDO::PARAM_INT);
+            $st->execute();
+            */
+            // Update each selected user's total_debt and insert into parts table
+            foreach ($selectedUsers as $selectedUserId) {
+                
+                $st = $db->prepare('UPDATE dz2_users SET total_debt = total_debt + :costPerUser WHERE id = :selectedUserId');
+                $st->bindValue(':costPerUser', $costPerUser, PDO::PARAM_INT);
+                $st->bindValue(':selectedUserId', $selectedUserId, PDO::PARAM_INT);
+                $st->execute();
+                
+                $st = $db->prepare('INSERT INTO dz2_parts (id_expense, id_user, cost) VALUES (:expenseId, :selectedUserId, :costPerUser)');
+                $st->bindValue(':expenseId', $expenseId, PDO::PARAM_INT);
+                $st->bindValue(':selectedUserId', $selectedUserId, PDO::PARAM_INT);
+                $st->bindValue(':costPerUser', $costPerUser, PDO::PARAM_INT);
+                $st->execute();
+            }
+
+            // Commit the transaction
+            $db->commit();
+        } catch (PDOException $e) {
+            // If an error occurs, rollback the transaction
+            $db->rollBack();
+            // Handle the error
+            throw $e;
+        }
     }
 
+    public function getUserBalances()
+    {
+        $db = DB::getConnection();
+        $st = $db->prepare('SELECT id, username, total_paid, total_debt FROM dz2_users');
+        $st->execute();
+        return $st->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function calculateNetBalances()
+    {
+        $userBalances = $this->getUserBalances();
+        $netBalances = [];
+
+        foreach ($userBalances as $user) {
+            $netBalances[$user->id] = $user->total_paid - $user->total_debt;
+        }
+
+        return $netBalances;
+    }
+
+    public function settleUpTransactions()
+    {
+        $netBalances = $this->calculateNetBalances();
+
+        $creditors = [];
+        $debtors = [];
+
+        foreach ($netBalances as $userId => $balance) {
+            if ($balance > 0) {
+                $creditors[$userId] = $balance;
+            } elseif ($balance < 0) {
+                $debtors[$userId] = -$balance;
+            }
+        }
+
+        $transactions = [];
+
+        foreach ($debtors as $debtorId => $debtAmount) {
+            foreach ($creditors as $creditorId => $creditAmount) {
+                if ($debtAmount == 0) break;
+                if ($creditAmount == 0) continue;
+
+                $transactionAmount = min($debtAmount, $creditAmount);
+
+                $transactions[] = [
+                    'from' => $debtorId,
+                    'to' => $creditorId,
+                    'amount' => $transactionAmount
+                ];
+
+                $debtors[$debtorId] -= $transactionAmount;
+                $creditors[$creditorId] -= $transactionAmount;
+            }
+        }
+
+        return $transactions;
+    }
 }
 
 ?>
