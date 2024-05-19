@@ -1,7 +1,3 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <!DOCTYPE html>
 <html>
 
@@ -17,10 +13,9 @@
         <input type="text" name="username" />
         <br />
         Password:
-        <input type="password" name="password"/>
+        <input type="password" name="password" />
         <br />
         <button type="submit" name="gumb" value="login">Ulogiraj se!</button>
-        <button type="submit" name="gumb" value="novi">Stvori novog korisnika!</button>
 
         <?php
         $error = $_GET['error'] ?? '';
@@ -29,6 +24,7 @@
         }
         ?>
     </form>
+    <p>Stvori novog korisnika <a href="/balance.php?rt=registracija/index">Registracija</a></p>
 
 </body>
 

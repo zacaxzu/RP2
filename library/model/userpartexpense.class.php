@@ -26,4 +26,6 @@ class UserPartExpense
         if (property_exists($this, $property))
             return $this->$property = $value;
     }
+
+    
 }

@@ -47,7 +47,8 @@ class LibraryService
                 AS expense_id, e.id_user, e.cost, e.description, e.date, u.username 
                 FROM dz2_expenses e 
                 JOIN dz2_users u 
-                ON e.id_user = u.id";
+                ON e.id_user = u.id
+                ORDER BY e.date DESC";
 
         $st = $db->prepare($sql);
         $st->execute();
@@ -266,6 +267,7 @@ class LibraryService
     {
         $netBalances = $this->calculateNetBalances();
 
+        // Separate creditors and debtors
         $creditors = [];
         $debtors = [];
 
@@ -273,31 +275,121 @@ class LibraryService
             if ($balance > 0) {
                 $creditors[$userId] = $balance;
             } elseif ($balance < 0) {
-                $debtors[$userId] = -$balance;
+                $debtors[$userId] = -$balance; // Store positive values for easier handling
             }
         }
 
         $transactions = [];
 
-        foreach ($debtors as $debtorId => $debtAmount) {
-            foreach ($creditors as $creditorId => $creditAmount) {
-                if ($debtAmount == 0) break;
-                if ($creditAmount == 0) continue;
+        while (!empty($debtors) && !empty($creditors)) {
+            // Get the first debtor and creditor
+            $debtorId = key($debtors);
+            $creditorId = key($creditors);
 
-                $transactionAmount = min($debtAmount, $creditAmount);
+            // Calculate the transaction amount
+            $transactionAmount = min($debtors[$debtorId], $creditors[$creditorId]);
 
-                $transactions[] = [
-                    'from' => $debtorId,
-                    'to' => $creditorId,
-                    'amount' => $transactionAmount
-                ];
+            // Record the transaction
+            $transactions[] = [
+                'from' => $debtorId,
+                'to' => $creditorId,
+                'amount' => $transactionAmount
+            ];
 
-                $debtors[$debtorId] -= $transactionAmount;
-                $creditors[$creditorId] -= $transactionAmount;
+            // Update the balances
+            $debtors[$debtorId] -= $transactionAmount;
+            $creditors[$creditorId] -= $transactionAmount;
+
+            // Remove the debtor or creditor if their balance is zero
+            if ($debtors[$debtorId] == 0) {
+                unset($debtors[$debtorId]);
+            }
+
+            if ($creditors[$creditorId] == 0) {
+                unset($creditors[$creditorId]);
             }
         }
 
+        // Replace user IDs with usernames in the transactions array
+        foreach ($transactions as &$transaction) {
+            $transaction['from'] = $this->getUserByUserId($transaction['from'])->getUsername();
+            $transaction['to'] = $this->getUserByUserId($transaction['to'])->getUsername();
+        }
+
         return $transactions;
+    }
+
+    public function registracijaKorisnika($username, $email, $password)
+    {
+        $db = DB::getConnection();
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $registration_sequence = '';
+        for ($i = 0; $i < 20; ++$i)
+        $registration_sequence .= chr(rand(0, 25) + ord('a')); // Zalijepi slučajno odabrano slovo
+        $total_paid = 0;
+        $total_debt = 0;
+        $has_registered = 0;
+
+        try {
+            $st = $db->prepare('INSERT INTO dz2_users (username, password_hash, total_paid, total_debt, email, registration_sequence, has_registered) VALUES (:username, :password_hash, :total_paid, :total_debt, :email, :registration_sequence, :has_registered)');
+            $st->execute(array(
+                'username' => $username,
+                'password_hash' => $password_hash,
+                'total_paid' => $total_paid,
+                'total_debt' => $total_debt,
+                'email' => $email,
+                'registration_sequence' => $registration_sequence,
+                'has_registered' => $has_registered
+            ));
+        } catch (PDOException $e) {
+            exit('Dogodila se greška pri registraciji: ' . $e->getMessage());
+        }
+
+        // Posaljemo mail za potvrdu registracije
+        $this->posaljiRegistracijaskiMail($email, $registration_sequence);
+
+        return true;
+    }
+
+    public function posaljiRegistracijaskiMail($to, $registration_sequence)
+    {
+        $to       = $_POST['email'];
+        $subject  = 'Registracijski mail';
+        $message  = 'Poštovani ' . $_POST['username'] . "!\nZa dovršetak registracije kliknite na sljedeći link: ";
+        $message .= 'http://' . $_SERVER['SERVER_NAME'] . htmlentities(dirname($_SERVER['PHP_SELF'])) . '/registracija_html.php?niz=' . $registration_sequence . "\n";
+        $headers  = 'From: rp2@studenti.math.hr' . "\r\n" .
+            'Reply-To: rp2@studenti.math.hr' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        $isOK = mail($to, $subject, $message, $headers);
+
+        if (!$isOK)
+            exit('Greška: ne mogu poslati mail. (Pokrenite na rp2 serveru.)');
+    }
+
+    public function potvrdiRegistraciju($registrationSequence)
+    {
+        $db = DB::getConnection();
+
+        //echo $registrationSequence;
+
+        try {
+            $st = $db->prepare('SELECT id FROM dz2_users WHERE registration_sequence = :registration_sequence AND has_registered = 0');
+            $st->execute(['registration_sequence' => $registrationSequence]);
+            $user = $st->fetch();
+
+            //echo $user;
+
+            if (!is_null($user)) {
+                $st = $db->prepare('UPDATE dz2_users SET has_registered = 1 WHERE id = :id');
+                $st->execute(['id' => $user['id']]);
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (PDOException $e) {
+            return 0;
+        }
     }
 }
 

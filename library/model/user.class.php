@@ -24,5 +24,10 @@ class User
         if (property_exists($this, $property))
             return $this->$property = $value;
     }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
 }
 ?>

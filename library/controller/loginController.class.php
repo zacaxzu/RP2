@@ -8,10 +8,24 @@ class LoginController
     {
         $ls = new LibraryService();
 
-        if (isset($_POST["gumb"]) && $_POST["gumb"] === "login")
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gumb']))
         {
-            setcookie('username', $_POST["username"], time() + 3600, '/');
-            return $ls->procesiraj_login();
+            if($_POST["gumb"] === "login"){
+                setcookie('username', $_POST["username"], time() + 3600, '/');
+                return $ls->procesiraj_login();
+            }
+        } 
+        elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gumb'])) {
+            if($_POST["gumb"] === "registracija"){
+                // Redirect to the registration controller
+                $registracijaController = new RegistracijaController();
+                $registracijaController->index();
+            }
+            else if ($_POST["gumb"] === "novi") {
+                // Redirect to the registration controller
+                $registracijaController = new RegistracijaController();
+                $registracijaController->index();
+            }
         }
         else
             require_once __DIR__ . '/../view/login_forma.php';
@@ -25,6 +39,10 @@ class LoginController
     public function logout()
     {
         setcookie('username', '', time() - 3600, '/');
+        session_start();
+
+        session_unset();
+        session_destroy();
 
         // Redirect the user to the login page
         require_once __DIR__ . '/../view/login_forma.php';
