@@ -4,57 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shishaku Game</title>
-    <style>
-        .container {
-            display: flex;
-        }
-        .grid {
-            display: grid;
-            gap: 0; /* Remove gap between cells */
-        }
-        .cell {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #000;
-            box-sizing: border-box; /* Ensure padding and border are included in the width and height */
-        }
-        .color-palette {
-            display: flex;
-            flex-direction: column; /* Display color options vertically */
-            margin-left: 20px;
-        }
-        .color-option {
-            display: flex;
-            align-items: center; /* Align radio button and color rectangle vertically */
-            margin: 5px 0; /* Adjust margin */
-        }
-        .color-option input[type="radio"] {
-            margin-right: 10px; /* Add space between radio button and color rectangle */
-        }
-        .color-option label {
-            width: 30px;
-            height: 30px;
-            border: 2px solid transparent; /* Add transparent border */
-            border-radius: 5px; /* Adjust border radius to make rectangles */
-            cursor: pointer;
-        }
-        .color-option input[type="radio"]:checked + label {
-            border-color: #000; /* Change border color when selected */
-        }
-    </style>
+    <link rel="stylesheet" href="shikaku.css">
 </head>
 <body>
     <h1>Select a Game</h1>
     <select id="gameSelect"></select>
     <button id="startGameButton">Započni igru!</button>
 
-    <div class="container">
-        <div id="gameGrid"></div>
-        <div id="colorPalette" class="color-palette"></div>
-    </div>
+    <table id="gameBoard"></table>
+
+    <div id="colorPalette" class="color-palette"></div>
 
     <script src="https://rp2.studenti.math.hr/~zbujanov/dz3/shikaku.js"></script>
     <script src="script.js"></script>
