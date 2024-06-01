@@ -81,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Ensure the second click is at a cell that is bottom-right of the first click
             if (row >= topLeftRow && col >= topLeftCol) {
+                // Postavite rubove pravokutnika
+                applyBorderToRectangle(gameBoardElement, topLeftRow, topLeftCol, bottomRightRow, bottomRightCol, 'black');
+
                 // Check if any cell within the rectangle is already colored
                 let isOccupied = false;
                 for (let i = topLeftRow; i <= row; i++) {
@@ -114,6 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Mark the color as used
                 usedColors.add(selectedColor);
+
+                if (calculateTotalRectangleArea() === gameBoard.length * gameBoard.length) {
+                    alert('Congratulations! You have successfully completed the game.');
+                    // Optionally, you can reset the game here or perform any other actions
+                }
+                
             } else {
                 alert('You need to select the bottom-right corner after selecting the top-left corner.');
             }
@@ -121,7 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reset first click
             firstClickCell.classList.remove('selected');
             firstClickCell = null;
+            
         }
+        
     });
 
     // Add event listener for right-click to handle rectangle deletion
@@ -153,6 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mark the color as unused
         usedColors.delete(colorToDelete);
     });
+
+    
 });
 
 function renderGameBoard(selectedGame) {
@@ -224,5 +237,72 @@ function checkAndHighlightNumber(gameBoardElement, topLeftRow, topLeftCol, botto
                 cell.style.color = 'red'; // Highlight the number text in red
             }
         }
+    }
+}
+
+// Calculate the sum of the areas of all placed rectangles
+function calculateTotalRectangleArea() {
+    let totalArea = 0;
+    for (let i = 0; i < gameBoard.length; i++) {
+        for (let j = 0; j < gameBoard[i].length; j++) {
+            if (gameBoard[i][j]) {
+                totalArea++;
+            }
+        }
+    }
+    return totalArea;
+}
+
+// Function to apply border to the outer edge of the rectangle
+function applyBorderToRectangle(gameBoardElement, topLeftRow, topLeftCol, bottomRightRow, bottomRightCol, borderColor) {
+    // Apply border to top row
+    for (let j = topLeftCol; j <= bottomRightCol; j++) {
+        const cell = gameBoardElement.rows[topLeftRow].cells[j];
+        cell.style.borderTop = `2px solid ${borderColor}`;
+    }
+
+    // Apply border to bottom row
+    for (let j = topLeftCol; j <= bottomRightCol; j++) {
+        const cell = gameBoardElement.rows[bottomRightRow].cells[j];
+        cell.style.borderBottom = `2px solid ${borderColor}`;
+    }
+
+    // Apply border to left column
+    for (let i = topLeftRow; i <= bottomRightRow; i++) {
+        const cell = gameBoardElement.rows[i].cells[topLeftCol];
+        cell.style.borderLeft = `2px solid ${borderColor}`;
+    }
+
+    // Apply border to right column
+    for (let i = topLeftRow; i <= bottomRightRow; i++) {
+        const cell = gameBoardElement.rows[i].cells[bottomRightCol];
+        cell.style.borderRight = `2px solid ${borderColor}`;
+    }
+}
+
+// Function to remove border from the outer edge of the rectangle
+function removeBorderFromRectangle(gameBoardElement, topLeftRow, topLeftCol, bottomRightRow, bottomRightCol) {
+    // Remove border from top row
+    for (let j = topLeftCol; j <= bottomRightCol; j++) {
+        const cell = gameBoardElement.rows[topLeftRow].cells[j];
+        cell.style.borderTop = '';
+    }
+
+    // Remove border from bottom row
+    for (let j = topLeftCol; j <= bottomRightCol; j++) {
+        const cell = gameBoardElement.rows[bottomRightRow].cells[j];
+        cell.style.borderBottom = '';
+    }
+
+    // Remove border from left column
+    for (let i = topLeftRow; i <= bottomRightRow; i++) {
+        const cell = gameBoardElement.rows[i].cells[topLeftCol];
+        cell.style.borderLeft = '';
+    }
+
+    // Remove border from right column
+    for (let i = topLeftRow; i <= bottomRightRow; i++) {
+        const cell = gameBoardElement.rows[i].cells[bottomRightCol];
+        cell.style.borderRight = '';
     }
 }
