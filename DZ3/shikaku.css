@@ -2,11 +2,11 @@ body {
     font-family: Arial, sans-serif;
 }
 
-#gameSelect {
+#odabranaPloca {
     margin-bottom: 10px;
 }
 
-#colorPalette {
+#paletaBoja {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
@@ -19,18 +19,23 @@ body {
 }
 
 .color-option label {
-    width: 20px;
+    width: 50px;
     height: 20px;
     margin-left: 5px;
     border: none;
     display: inline-block;
 }
 
-#gameBoard {
+.color-options-container {
+    display: flex;
+    /* Use flexbox to arrange items horizontally */
+}
+
+#Ploca {
     border-collapse: collapse;
 }
 
-#gameBoard td {
+#Ploca td {
     width: 40px;
     height: 40px;
     text-align: center;
@@ -38,6 +43,6 @@ body {
     border: 1px solid #ddd;
 }
 
-#gameBoard td.selected {
+#Ploca td.selected {
     border: 2px solid red;
 }
