@@ -49,11 +49,11 @@ function drawPlayers(context, team) {
 }
 
 // Function to draw the ball path and ball as a white circle
-function drawBallPath(context, situation) {
-    const [start, end] = situation.lopta;
+function drawBallPath(context, situacija) {
+    const [start, end] = situacija.lopta;
 
     // Draw the ball path
-    if (situation.tip_situacije === 'gol') {
+    if (situacija.tip_situacije === 'gol') {
         context.strokeStyle = "white"; // Color for the ball path
         context.lineWidth = 2; // Width of the line
 

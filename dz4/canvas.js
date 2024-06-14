@@ -4,5 +4,6 @@ drawBackground(context);
 drawRectangles(context);
 drawArc(context);
 drawGoal(context);
-drawPlayers(context, tim1);
-drawBallPath(context, tim1);
+drawPlayers(context, situacija[0].tim1);
+drawPlayers(context, situacija[0].tim2);
+drawBallPath(context, situacija[0]);
