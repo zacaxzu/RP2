@@ -1,5 +1,5 @@
 // Function to initialize and draw the current situation
-function initializeAndDrawCurrentSituation() {
+function initializeAndDrawCurrentSituation(currentSituationIndex) {
     const context = initializeCanvas();
     const currentSituation = situacija[currentSituationIndex];
 
@@ -12,6 +12,7 @@ function initializeAndDrawCurrentSituation() {
     drawBallPath(context, currentSituation);
 
     setTeamNames(currentSituation);
+    rezultatiGlasanja(currentSituation);
     updateSituationNumber(currentSituationIndex);
 
     if (currentSituation.tip_situacije === 'offside') {
@@ -177,10 +178,17 @@ function handleCanvasClick(event, context, situation) {
     }
 }
 
-
 // Set the team names and colors in the header
 function setTeamNames(situation) {
     const matchHeader = document.getElementById("match-header");
+    let conditionalText = '';
+    if(situation.tip_situacije === 'gol'){
+        conditionalText = 'Provjera je li ' + situation.tim1.ime + ' dala gol.';
+    }
+    else {
+        conditionalText = 'Provjera je li ' + situation.tim1.ime + ' napravila offside.';
+    }
+
     matchHeader.innerHTML = `
         <div style="display: flex; align-items: center;">
             Utakmica: 
@@ -190,21 +198,15 @@ function setTeamNames(situation) {
             <span>${situation.tim2.ime}</span>
             <div style="width: 20px; height: 20px; background-color: ${situation.tim2.boja}; margin-left: 5px;"></div>
         </div>
+        <div>${conditionalText}</div>
     `;
 }
 
-// Event listeners for buttons
-document.getElementById("prev-situation").addEventListener("click", () => {
-    if (currentSituationIndex > 0) {
-        currentSituationIndex--;
-        initializeAndDrawSituation(currentSituationIndex);
-    }
-});
+function rezultatiGlasanja(situation){
+    const rezultati_glasanja = document.getElementById("rezultati-glasanja");
+    let conditionalText = '';
+    let glasoviText = `Do sada: ${situation.broj_glasova[0]} kaže DA, ${situation.broj_glasova[1]} kaže NE.`;
 
-document.getElementById("next-situation").addEventListener("click", () => {
-    if (currentSituationIndex < situacija.length - 1) {
-        currentSituationIndex++;
-        initializeAndDrawSituation(currentSituationIndex);
-    }
-});
+    rezultati_glasanja.innerHTML = `<div style="display: flex; align-items: center;">Do sada: ${situation.broj_glasova[0]} gledatelja kaže DA, ${situation.broj_glasova[1]} gledatelja kaže NE.</div>`;
+}
 
