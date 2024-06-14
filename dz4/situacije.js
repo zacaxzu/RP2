@@ -4,23 +4,22 @@ const situacija = [
             ime: "Prva ekipa",
             boja: "blue", // boja točkice
             igraci: [
-                { x: 50, y: 50 },
-                { x: 100, y: 150 }
+                { x: 200, y: 200 },
+                { x: 250, y: 100 }
         ]},
         tim2 : {
             ime: "Druga ekipa",
             boja: "red", // boja točkice
             igraci: [
-                { x: 200, y: 250 },
-                { x: 300, y: 100 },
-                { x: 400, y: 200 }
+                { x: 270, y: 95 },
+                { x: 240, y: 15 }
         ]},
-        tip_situacije: "gol",
+        tip_situacije: "offside",
         lopta: [
-            { x: 120, y: 200 }, // starting position of the ball
-            { x: 400, y: 25 }  // ending position of the ball
+            { x: 205, y: 195 }, // starting position of the ball
+            { x: 245, y: 95 }  // ending position of the ball
         ],
-        broj_glasova: [50, 30]
+        broj_glasova: [511,14]
     }
     // Add more situations as needed
 ];

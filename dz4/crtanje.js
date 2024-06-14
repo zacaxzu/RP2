@@ -84,3 +84,74 @@ function drawBallPath(context, situacija) {
         context.fill(); // Fill the circle
     }
 }
+
+// Function to draw a horizontal line
+function drawHorizontalLine(context, y) {
+    context.strokeStyle = 'white';
+    context.lineWidth = 2;
+
+    context.beginPath();
+    context.setLineDash([5, 15]);
+    context.moveTo(0, y);
+    context.lineTo(context.canvas.width, y);
+    context.stroke();
+
+    context.setLineDash([]);
+}
+
+// Function to clear the canvas and redraw all elements except the horizontal line
+function clearCanvasAndRedraw(context, situation) {
+    // Clear the canvas
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
+    // Redraw all elements
+    drawBackground(context);
+    drawRectangles(context);
+    drawArc(context);
+    drawGoal(context);
+    drawPlayers(context, situation.tim1);
+    drawPlayers(context, situation.tim2);
+    drawBallPath(context, situation);
+}
+
+// Function to handle canvas clicks
+function handleCanvasClick(event, context, situation) {
+    const rect = context.canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Check if the click is on a player
+    const allPlayers = [...situation.tim1.igraci, ...situation.tim2.igraci];
+    let clickedPlayer = null;
+    for (const player of allPlayers) {
+        if (x >= player.x - 10 && x <= player.x + 10 && y >= player.y - 10 && y <= player.y + 10) {
+            clickedPlayer = player;
+            break;
+        }
+    }
+
+    // If a player was clicked, draw or remove the horizontal line
+    if (clickedPlayer) {
+        if (currentLine) {
+            // If there's already a line, clear the canvas and redraw all elements
+            clearCanvasAndRedraw(context, situation);
+            currentLine = null;
+        } else {
+            // Draw the horizontal line through the clicked player
+            drawHorizontalLine(context, clickedPlayer.y);
+            currentLine = clickedPlayer.y;
+        }
+    } else {
+        // If clicked elsewhere, clear the line if it exists
+        if (currentLine) {
+            clearCanvasAndRedraw(context, situation);
+            currentLine = null;
+        }
+    }
+}
+
+// Function to set the team names
+function setTeamNames(situation) {
+    document.getElementById("tim1-name").innerText = situation.tim1.ime;
+    document.getElementById("tim2-name").innerText = situation.tim2.ime;
+}
