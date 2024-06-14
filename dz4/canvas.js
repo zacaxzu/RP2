@@ -3,20 +3,22 @@ let currentLine = null;
 
 // Initialize canvas and draw elements
 const context = initializeCanvas();
-const currentSituation = situacija[0]; // Assume you are dealing with the first situation
+const currentSituationIndex  = 0; // Assume you are dealing with the first situation
 
-drawBackground(context);
-drawRectangles(context);
-drawArc(context);
-drawGoal(context);
-drawPlayers(context, currentSituation.tim1);
-drawPlayers(context, currentSituation.tim2);
-drawBallPath(context, currentSituation);
+// Event listeners for buttons
+document.getElementById("prev-situation").addEventListener("click", () => {
+    if (currentSituationIndex > 0) {
+        currentSituationIndex--;
+        initializeAndDrawCurrentSituation();
+    }
+});
 
-// Set team names
-setTeamNames(currentSituation);
+document.getElementById("next-situation").addEventListener("click", () => {
+    if (currentSituationIndex < situacija.length - 1) {
+        currentSituationIndex++;
+        initializeAndDrawCurrentSituation();
+    }
+});
 
-// Add click event listener if the situation type is 'offside'
-if (currentSituation.tip_situacije === 'offside') {
-    context.canvas.addEventListener('click', (event) => handleCanvasClick(event, context, currentSituation));
-}
+// Initialize the first situation
+initializeAndDrawCurrentSituation();

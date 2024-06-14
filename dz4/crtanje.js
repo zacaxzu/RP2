@@ -1,8 +1,35 @@
-// crtanje canvasa
+// Function to initialize and draw the current situation
+function initializeAndDrawCurrentSituation() {
+    const context = initializeCanvas();
+    const currentSituation = situacija[currentSituationIndex];
+
+    drawBackground(context);
+    drawRectangles(context);
+    drawArc(context);
+    drawGoal(context);
+    drawPlayers(context, currentSituation.tim1);
+    drawPlayers(context, currentSituation.tim2);
+    drawBallPath(context, currentSituation);
+
+    setTeamNames(currentSituation);
+    updateSituationNumber(currentSituationIndex);
+
+    if (currentSituation.tip_situacije === 'offside') {
+        context.canvas.addEventListener('click', (event) => handleCanvasClick(event, context, currentSituation));
+    }
+}
+
+// Initialize canvas and draw elements for a given situation
 function initializeCanvas() {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
     return context;
+}
+
+// Update the situation number display
+function updateSituationNumber(index) {
+    const situationNumberElement = document.getElementById("situation-number");
+    situationNumberElement.innerText = `Situacija broj: ${index + 1}`;
 }
 
 // crtanje pozadine
@@ -150,8 +177,34 @@ function handleCanvasClick(event, context, situation) {
     }
 }
 
-// Function to set the team names
+
+// Set the team names and colors in the header
 function setTeamNames(situation) {
-    document.getElementById("tim1-name").innerText = situation.tim1.ime;
-    document.getElementById("tim2-name").innerText = situation.tim2.ime;
+    const matchHeader = document.getElementById("match-header");
+    matchHeader.innerHTML = `
+        <div style="display: flex; align-items: center;">
+            Utakmica: 
+            <div style="width: 20px; height: 20px; background-color: ${situation.tim1.boja}; margin-right: 5px;"></div>
+            <span>${situation.tim1.ime}</span>
+            <span> - </span>
+            <span>${situation.tim2.ime}</span>
+            <div style="width: 20px; height: 20px; background-color: ${situation.tim2.boja}; margin-left: 5px;"></div>
+        </div>
+    `;
 }
+
+// Event listeners for buttons
+document.getElementById("prev-situation").addEventListener("click", () => {
+    if (currentSituationIndex > 0) {
+        currentSituationIndex--;
+        initializeAndDrawSituation(currentSituationIndex);
+    }
+});
+
+document.getElementById("next-situation").addEventListener("click", () => {
+    if (currentSituationIndex < situacija.length - 1) {
+        currentSituationIndex++;
+        initializeAndDrawSituation(currentSituationIndex);
+    }
+});
+
