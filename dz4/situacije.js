@@ -44,3 +44,4 @@ const situacija = [
     }
     // Add more situations as needed
 ];
+

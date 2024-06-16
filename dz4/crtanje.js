@@ -148,6 +148,10 @@ function handleCanvasClick(event, context, situation) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
+    // Default decision is "NE" (not offside) before any click
+    let decision = "NE";
+    situation.gledateljiOdlucuju = decision;
+
     // Check if the click is on a player
     const allPlayers = [...situation.tim1.igraci, ...situation.tim2.igraci];
     let clickedPlayer = null;
@@ -158,8 +162,15 @@ function handleCanvasClick(event, context, situation) {
         }
     }
 
-    // If a player was clicked, draw or remove the horizontal line
+    // Update decision based on the click location
     if (clickedPlayer) {
+        if (situation.tip_situacije === 'offside') {
+            if (situation.tim1.igraci.includes(clickedPlayer)) {
+                decision = "NE"; // Player from team 1, not offside
+            } else if (situation.tim2.igraci.includes(clickedPlayer)) {
+                decision = "DA"; // Player from team 2, offside
+            }
+        }
         if (currentLine) {
             // If there's already a line, clear the canvas and redraw all elements
             clearCanvasAndRedraw(context, situation);
@@ -170,12 +181,18 @@ function handleCanvasClick(event, context, situation) {
             currentLine = clickedPlayer.y;
         }
     } else {
-        // If clicked elsewhere, clear the line if it exists
+        decision = "NE"; // Clicked on the field, not on a player
         if (currentLine) {
             clearCanvasAndRedraw(context, situation);
             currentLine = null;
         }
     }
+
+    // Update the decision in the situation object (or handle it as needed)
+    situation.gledateljiOdlucuju = decision; // Example: Update decision in the situation object
+
+    // Update results display
+    rezultatiGlasanja(situation);
 }
 
 // Set the team names and colors in the header
@@ -202,11 +219,19 @@ function setTeamNames(situation) {
     `;
 }
 
-function rezultatiGlasanja(situation){
+// Function to update results display
+function rezultatiGlasanja(situation) {
     const rezultati_glasanja = document.getElementById("rezultati-glasanja");
-    let conditionalText = '';
-    let glasoviText = `Do sada: ${situation.broj_glasova[0]} kaže DA, ${situation.broj_glasova[1]} kaže NE.`;
 
-    rezultati_glasanja.innerHTML = `<div style="display: flex; align-items: center;">Do sada: ${situation.broj_glasova[0]} gledatelja kaže DA, ${situation.broj_glasova[1]} gledatelja kaže NE.</div>`;
+    let glasoviText = `Do sada: ${situation.broj_glasova[0]} gledatelja kaže DA, ${situation.broj_glasova[1]} gledatelja kaže NE.`;
+    let odlukaText = `Odluka gledatelja: ${situation.gledateljiOdlucuju}`;
+
+    rezultati_glasanja.innerHTML = `
+        <div style="display: flex; align-items: center;">
+            ${glasoviText}
+        </div>
+        <div style="margin-top: 5px;">
+            ${odlukaText}
+        </div>
+    `;
 }
-
