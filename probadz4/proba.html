@@ -3,31 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Dvojbene Situacije</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 </head>
 <body>
     <h1>Dvojbene Situacije</h1>
     <div>
-        <button onclick="previousSituacija()">Previous</button>
+        <button id="previous-btn">Previous</button>
         <span id="situacija-broj">Situacija 1</span>
-        <button onclick="nextSituacija()">Next</button>
+        <button id="next-btn">Next</button>
     </div>
     <div id="situacija-info" style="margin-top: 20px;">
         <!-- Informacije o situaciji će biti prikazane ovdje -->
     </div>
     <div id="glasanje" style="margin-top: 20px; display: none;">
-        <button onclick="glasaj('DA')">DA</button>
-        <button onclick="glasaj('NE')">NE</button>
+        <button id="glasaj-da">DA</button>
+        <button id="glasaj-ne">NE</button>
     </div>
-
-    <canvas
-      width="550"
-      height="375"
-      style="border: solid 1px"
-      id="canvas"
-    ></canvas>
+    <canvas id="canvas" width="550" height="375" style="border:1px solid #000000; margin-top: 20px;"></canvas>
 
     <script src="script.js"></script>
     <script src="canvas.js"></script>
-
 </body>
 </html>
