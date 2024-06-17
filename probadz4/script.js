@@ -19,6 +19,7 @@ function dohvatiSituaciju(brojSituacije) {
                 window.currentSituacijaData = data; // Store the current situation data
                 selectedPlayer = null; // Reset selected player
                 currentLine = null; // Reset current line
+                updateVotingButtons(null); // Reset voting buttons to show "NE"
             }
         },
         error: function(error) {
@@ -84,6 +85,22 @@ function updateSituacijaNumber() {
     $('#situacija-broj').text(`Situacija ${currentSituacija}`);
 }
 
+// Function to update voting buttons visibility
+function updateVotingButtons(player) {
+    if (!player) {
+        $('#glasaj-da').hide();
+        $('#glasaj-ne').show(); // Always show "NE" button when no player is selected
+    } else {
+        if (window.currentSituacijaData.tim1.igraci.includes(player)) {
+            $('#glasaj-da').hide();
+            $('#glasaj-ne').show();
+        } else if (window.currentSituacijaData.tim2.igraci.includes(player)) {
+            $('#glasaj-da').show();
+            $('#glasaj-ne').hide();
+        }
+    }
+}
+
 // Function to handle click events on the canvas
 function handleCanvasClick(event) {
     const canvas = document.getElementById("canvas");
@@ -125,11 +142,17 @@ function handleCanvasClick(event) {
                 currentLine = null;
             }
         }
+
+        // Update voting buttons visibility
+        updateVotingButtons(selectedPlayer);
     } else {
         // Clicked on the field, not on a player
         if (currentLine !== null) {
             currentLine = null;
         }
+
+        // Show "NE" button by default when no player is selected
+        updateVotingButtons(null);
     }
 
     // Redraw the canvas with the updated line
