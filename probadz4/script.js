@@ -116,12 +116,14 @@ function handleCanvasClick(event) {
             }
         }
 
-        // Draw the horizontal line through the clicked player
-        if (currentLine === null || currentLine !== selectedPlayer.y) {
-            currentLine = selectedPlayer.y;
-        } else {
-            // If the same player is clicked again, remove the line
-            currentLine = null;
+        // Draw the horizontal line through the clicked player only for offside
+        if (situacija.tip_situacije === 'offside') {
+            if (currentLine === null || currentLine !== selectedPlayer.y) {
+                currentLine = selectedPlayer.y;
+            } else {
+                // If the same player is clicked again, remove the line
+                currentLine = null;
+            }
         }
     } else {
         // Clicked on the field, not on a player

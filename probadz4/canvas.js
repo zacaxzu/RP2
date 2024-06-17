@@ -92,7 +92,7 @@ function crtajCanvas(situacija, currentLine) {
     drawPlayers(context, situacija.tim2);
     drawBallPath(context, situacija);
 
-    if (currentLine !== null) {
+    if (situacija.tip_situacije === 'offside' && currentLine !== null) {
         drawHorizontalLine(context, currentLine);
     }
 }
