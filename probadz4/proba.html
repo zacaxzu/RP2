@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dvojbene Situacije</title>
+</head>
+<body>
+    <h1>Dvojbene Situacije</h1>
+    <div>
+        <button onclick="previousSituacija()">Previous</button>
+        <span id="situacija-broj">Situacija 1</span>
+        <button onclick="nextSituacija()">Next</button>
+    </div>
+    <div id="situacija-info" style="margin-top: 20px;">
+        <!-- Informacije o situaciji će biti prikazane ovdje -->
+    </div>
+    <div id="glasanje" style="margin-top: 20px; display: none;">
+        <button onclick="glasaj('DA')">DA</button>
+        <button onclick="glasaj('NE')">NE</button>
+    </div>
+
+    <canvas
+      width="550"
+      height="375"
+      style="border: solid 1px"
+      id="canvas"
+    ></canvas>
+
+    <script src="script.js"></script>
+    <script src="canvas.js"></script>
+
+</body>
+</html>
