@@ -1,49 +1,33 @@
 <?php
-require_once __DIR__ . '/libraryservice.class.php';
-$ls = new LibraryService();
+session_start(); // Start the session
 
-$kalodonti = $ls->getAllIgraFromKalodonti('proba');
-foreach ($kalodonti as $kalodont) {
-    echo $kalodont->rijec . ' ';
+require_once __DIR__ . '/kalodontController.class.php';
+$controller = new KalodontController();
+$data = $controller->handleRequest();
+
+// Store vrsta_igre in session if submitted via POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['odabir_akcije']) && $_POST['odabir_akcije'] === 'igra' && isset($_POST['vrsta_igre'])) {
+    $_SESSION['vrsta_igre'] = htmlspecialchars($_POST['vrsta_igre']);
 }
-$kalodont = $ls->getKalodontById(5);
-echo '<br>Prvi kalodont: ' . $kalodont->rijec . '<br>';
 
-var_dump($_POST['odabir_akcije']);
-echo '<br>';
-echo 'Vrsta igre: <br>';
-var_dump($_POST['vrsta_igre']);
-echo '<br>';
-echo 'selected_kolodonti: ';
-var_dump($_POST['selected_kolodonti']);
-
-echo '<br> Igre: <br>';
-$igre = $ls->getAllDistinctIgra();
-foreach ($igre as $igra) {
-    echo $igra . ' ';
-}
+extract($data);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zadatak 1</title>
     <style>
-        table,
-        td {
+        table, td {
             border: 1px solid;
         }
-
         .red-row {
             background-color: red;
         }
     </style>
 </head>
-
 <body>
     <form action="zadatak1.php" method="post">
         <table>
@@ -84,7 +68,8 @@ foreach ($igre as $igra) {
             <select name="vrsta_igre">
                 <?php
                 foreach ($igre as $igra) {
-                    echo '<option value="' . $igra . '">' . $igra . '</option>';
+                    $selected = ($igra === $_SESSION['vrsta_igre']) ? 'selected' : '';
+                    echo '<option value="' . htmlspecialchars($igra) . '" ' . $selected . '>' . htmlspecialchars($igra) . '</option>';
                 }
                 ?>
             </select>
@@ -96,8 +81,16 @@ foreach ($igre as $igra) {
 
         <br>
         Kazneni bodovi do sada:
-
     </form>
-</body>
 
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
+        <?php if (!empty($selectedIgra)) : ?>
+            <p>Odabrana igra: <?php echo $selectedIgra; ?></p>
+        <?php endif; ?>
+
+        <?php if (!empty($selectedKolodonti)) : ?>
+            <p>Diskvalificirane riječi: <?php echo implode(', ', $selectedKolodonti); ?></p>
+        <?php endif; ?>
+    <?php endif; ?>
+</body>
 </html>
