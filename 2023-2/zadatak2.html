@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Šatori</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Function to display trees immediately
+            $.ajax({
+                url: 'zadatak2.php',
+                method: 'POST',
+                data: { action: 'getTrees' },
+                success: function(response) {
+                    const trees = JSON.parse(response);
+                    trees.forEach(function(tree) {
+                        const cellId = `#r${tree.redak}c${tree.stupac}`;
+                        $(cellId).text('X');
+                    });
+                }
+            });
+
+            // Function to get the number of tents in a row
+            $("#getRowTents").click(function(){
+                const row = $("#rowInput").val();
+                $.ajax({
+                    url: 'zadatak2.php',
+                    method: 'POST',
+                    data: { action: 'getRowTents', row: row },
+                    success: function(response) {
+                        if(row >= 1 && row <= 5) {
+                            $("#row" + row).text(response);
+                        }
+                    }
+                });
+            });
+
+            // Function to get the number of tents in a column
+            $("#getColumnTents").click(function(){
+                const column = $("#columnInput").val();
+                $.ajax({
+                    url: 'zadatak2.php',
+                    method: 'POST',
+                    data: { action: 'getColumnTents', column: column },
+                    success: function(response) {
+                        if(column >= 1 && column <= 5) {
+                            $("#column" + column).text(response);
+                        }
+                    }
+                });
+            });
+
+            // Function to place or remove a tent in a specified cell
+            $(".tentCell").click(function(){
+                const cellId = $(this).attr('id');
+                const row = cellId.charAt(1);
+                const column = cellId.charAt(3);
+                $.ajax({
+                    url: 'zadatak2.php',
+                    method: 'POST',
+                    data: { action: 'toggleTent', row: row, column: column },
+                    success: function(response) {
+                        if(response === 'tent_placed') {
+                            $(`#${cellId}`).text('Š');
+                        } else if (response === 'tent_removed') {
+                            $(`#${cellId}`).text('');
+                        } else {
+                            alert(response);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <form action="" method="post">
+        <input type="number" id="rowInput" placeholder="Unesite broj retka">
+        <button type="button" id="getRowTents">Vrati broj šatora u retku</button><br><br>
+        <input type="number" id="columnInput" placeholder="Unesite broj stupca">
+        <button type="button" id="getColumnTents">Vrati broj šatora u stupcu</button><br><br>
+    </form>
+    <div id="result"></div>
+
+    <table border="1">
+        <tr>
+            <th></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td id="r1c1" class="tentCell"></td>
+            <td id="r1c2" class="tentCell"></td>
+            <td id="r1c3" class="tentCell"></td>
+            <td id="r1c4" class="tentCell"></td>
+            <td id="r1c5" class="tentCell"></td>
+            <td id="row1"></td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td id="r2c1" class="tentCell"></td>
+            <td id="r2c2" class="tentCell"></td>
+            <td id="r2c3" class="tentCell"></td>
+            <td id="r2c4" class="tentCell"></td>
+            <td id="r2c5" class="tentCell"></td>
+            <td id="row2"></td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td id="r3c1" class="tentCell"></td>
+            <td id="r3c2" class="tentCell"></td>
+            <td id="r3c3" class="tentCell"></td>
+            <td id="r3c4" class="tentCell"></td>
+            <td id="r3c5" class="tentCell"></td>
+            <td id="row3"></td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td id="r4c1" class="tentCell"></td>
+            <td id="r4c2" class="tentCell"></td>
+            <td id="r4c3" class="tentCell"></td>
+            <td id="r4c4" class="tentCell"></td>
+            <td id="r4c5" class="tentCell"></td>
+            <td id="row4"></td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td id="r5c1" class="tentCell"></td>
+            <td id="r5c2" class="tentCell"></td>
+            <td id="r5c3" class="tentCell"></td>
+            <td id="r5c4" class="tentCell"></td>
+            <td id="r5c5" class="tentCell"></td>
+            <td id="row5"></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td id="column1"></td>
+            <td id="column2"></td>
+            <td id="column3"></td>
+            <td id="column4"></td>
+            <td id="column5"></td>
+        </tr>
+    </table>
+</body>
+</html>
