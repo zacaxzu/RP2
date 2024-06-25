@@ -214,21 +214,25 @@
             if (odabraniIgrac) {
                 if (situacija.tim1.igraci.includes(odabraniIgrac)) {
                     odluka = "NE";
-                } else if (situacija.tim2.igraci.includes(odabraniIgrac)) {
+                } else if (situacija.tim2.igraci.includes(odabraniIgrac) && situacija.tip_situacije === 'offside' ) {
                     odluka = "DA";
-                }
+                }                
 
                 if (trenutnaLinija === null || trenutnaLinija !== odabraniIgrac.y) {
                     trenutnaLinija = odabraniIgrac.y;
                 } else {
                     trenutnaLinija = null;
                 }
-            } else if (Math.abs(situacija.lopta[1].x - clickX) <= 10 && Math.abs(situacija.lopta[1].y - clickY) <= 10) {
-                prikaziKvadrat = !prikaziKvadrat;
-                odluka = "DA";
+
+                prikaziKvadrat = false; // Ensure square is not shown if player is clicked
             } else {
-                trenutnaLinija = null;
-                prikaziKvadrat = false;
+                const lopta = situacija.lopta[1];
+                if (Math.abs(lopta.x - clickX) <= 10 && Math.abs(lopta.y - clickY) <= 10) {
+                    prikaziKvadrat = true; // Toggle square display
+                    odluka = "DA";
+                } else {
+                    prikaziKvadrat = false; // Hide square if clicked outside ball area
+                }
             }
 
             $('#odluka-glasanja').text(odluka);
