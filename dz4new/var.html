@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dvojbene Situacije</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+        #controls {
+            margin-top: 10px;
+        }
+        .team-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border: 1px solid black;
+        }
+        #glasanje {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+</head>
+<body>
+    <div id="buttons">
+        <button id="prev-btn">Prethodna situacija</button>
+        <span>Situacija broj <span id="situation-number"></span></span>
+        <button id="next-btn">Iduća situacija</button>
+    </div>
+    <div>
+        <h1>Utakmica: <span id="match-info"></span></h1>
+        <h3><span id="situation-type"></span></h3>
+        <p>Do sada: <span id="votes"></span></p>
+        <p>Glasajte je li <span id="situation-type-2">!</span>! Vaša odluka: <span id="user-decision"></span>
+            <button id="vote-btn">Glasaj!</button>
+        </p>
+    </div>
+    <canvas id="canvas" width="600" height="400"></canvas>
+
+    <script>
+        let trenutnaSituacija = 1;
+        let odluka = "NE";
+        let odabraniIgrac = null;
+        let trenutnaLinija = null;
+        let prikaziKvadrat = false;
+        let podaci;
+
+        function dohvatiSituaciju(brojSituacije) {
+            $.ajax({
+                url: `https://rp2.studenti.math.hr/~zbujanov/dz4/var.php?situacija=${brojSituacije}`,
+                method: 'GET',
+                success: function(data) {
+                    if (!data.error) {
+                        podaci = data;
+                        trenutnaLinija = null;
+                        prikaziKvadrat = false;
+                        updateDisplay(data);
+                    }
+                }
+            });
+        }
+
+        function provjeraGlasanja(brojSituacije, vote) {
+            const voteKey = `vote-${brojSituacije}`;
+            if (localStorage.getItem(voteKey)) {
+                alert('Već ste glasali za ovu situaciju.');
+                return;
+            }
+
+            $.ajax({
+                url: `https://rp2.studenti.math.hr/~zbujanov/dz4/var.php?situacija=${brojSituacije}&glas=${vote}`,
+                method: 'GET',
+                success: function(data) {
+                    if (!data.error) {
+                        podaci = data;
+                        updateDisplay(data);
+                        localStorage.setItem(voteKey, vote);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error voting on the situation:', error);
+                }
+            });
+        }
+
+        function updateDisplay(data) {
+            $('#situation-number').text(trenutnaSituacija);
+
+            const team1ColorBox = `<span class="team-color" style="background-color: ${data.tim1.boja};"></span>`;
+            const team2ColorBox = `<span class="team-color" style="background-color: ${data.tim2.boja};"></span>`;
+            $('#match-info').html(`${team1ColorBox}${data.tim1.ime} - ${data.tim2.ime}${team2ColorBox}`);
+
+            $('#situation-type').text(data.tip_situacije === 'gol' ? `Provjera je li ${data.tim1.ime} dala gol.` : `Provjera je li ${data.tim1.ime} napravila offside.`);
+            $('#situation-type-2').text(data.tip_situacije === 'gol' ? `gol` : `offside`);
+            $('#votes').text(`${data.broj_glasova[0]} gledatelja kaže DA, ${data.broj_glasova[1]} gledatelja kaže NE.`);
+
+            odluka = 'NE';
+            $('#user-decision').text(odluka);
+
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawField(ctx);
+            drawPlayers(ctx, data.tim1.igraci, data.tim1.boja);
+            drawPlayers(ctx, data.tim2.igraci, data.tim2.boja);
+            drawBall(ctx, data.lopta, data.tip_situacije);
+            drawLine(ctx, data.lopta[0], data.lopta[1]);
+
+            if (data.tip_situacije === 'offside' && trenutnaLinija !== null) {
+                drawDecisionLine(ctx, trenutnaLinija);
+            } else if (data.tip_situacije === 'gol' && prikaziKvadrat) {
+                drawSquare(ctx, data.lopta[1]);
+            }
+        }
+
+        function drawField(ctx) {
+            ctx.fillStyle = "green";
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.strokeStyle = "white";
+            ctx.strokeRect(25, 25, 550, 350);
+            ctx.strokeRect(225, 25, 100, 50);
+            ctx.strokeRect(170, 25, 210, 115);
+
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(235, 25, 80, 2);
+
+            ctx.strokeStyle = "white";
+            const x = 275, y = 80, radius = 85, startAngle = -Math.PI - Math.PI / 4, endAngle = Math.PI / 4, counterclockwise = true;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+            ctx.stroke();
+        }
+
+        function drawPlayers(ctx, players, color) {
+            ctx.fillStyle = color;
+            players.forEach(player => {
+                ctx.fillRect(player.x + 15, player.y + 15, 15, 15);
+            });
+        }
+
+        function drawLine(ctx, start, end) {
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(start.x + 25, start.y + 25);
+            ctx.lineTo(end.x + 25, end.y + 25);
+            ctx.stroke();
+        }
+
+        function drawBall(ctx, ball) {
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(ball[1].x + 25, ball[1].y + 25, 8, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function drawDecisionLine(ctx, y) {
+            ctx.strokeStyle = "white";
+            ctx.setLineDash([5, 15]);
+            ctx.beginPath();
+            ctx.moveTo(0, y + 15);
+            ctx.lineTo(ctx.canvas.width, y + 15);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawSquare(ctx, ball) {
+            ctx.strokeStyle = "white";
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(ball.x + 15, ball.y + 15);
+            ctx.lineTo(ball.x + 35, ball.y + 15);
+            ctx.lineTo(ball.x + 35, ball.y + 35);
+            ctx.lineTo(ball.x + 15, ball.y + 35);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function handleCanvasClick(event) {
+            const canvas = document.getElementById("canvas");
+            const rect = canvas.getBoundingClientRect();
+            const clickX = event.clientX - rect.left - 25;
+            const clickY = event.clientY - rect.top - 25;
+            const situacija = podaci;
+
+            odluka = "NE";
+            odabraniIgrac = null;
+
+            const allPlayers = [...situacija.tim1.igraci, ...situacija.tim2.igraci];
+            for (const player of allPlayers) {
+                const playerCenterX = player.x ;
+                const playerCenterY = player.y ;
+                const playerSize = 15;
+
+                const halfSize = playerSize / 2;
+                const minX = playerCenterX - halfSize;
+                const maxX = playerCenterX + halfSize;
+                const minY = playerCenterY - halfSize;
+                const maxY = playerCenterY + halfSize;
+
+                if (clickX >= minX && clickX <= maxX && clickY >= minY && clickY <= maxY) {
+                    odabraniIgrac = player;
+                    break;
+                }
+            }
+
+            if (odabraniIgrac) {
+                if (situacija.tim1.igraci.includes(odabraniIgrac)) {
+                    odluka = "NE";
+                } else if (situacija.tim2.igraci.includes(odabraniIgrac)) {
+                    odluka = "DA";
+                }
+
+                if (trenutnaLinija === null || trenutnaLinija !== odabraniIgrac.y) {
+                    trenutnaLinija = odabraniIgrac.y;
+                } else {
+                    trenutnaLinija = null;
+                }
+            } else if (Math.abs(situacija.lopta[1].x - clickX) <= 10 && Math.abs(situacija.lopta[1].y - clickY) <= 10) {
+                prikaziKvadrat = !prikaziKvadrat;
+                odluka = "DA";
+            } else {
+                trenutnaLinija = null;
+                prikaziKvadrat = false;
+            }
+
+            $('#user-decision').text(odluka);
+
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawField(ctx);
+            drawPlayers(ctx, situacija.tim1.igraci, situacija.tim1.boja);
+            drawPlayers(ctx, situacija.tim2.igraci, situacija.tim2.boja);
+            drawBall(ctx, situacija.lopta, situacija.tip_situacije);
+            drawLine(ctx, situacija.lopta[0], situacija.lopta[1]);
+
+            if (situacija.tip_situacije === "offside" && trenutnaLinija !== null) {
+                drawDecisionLine(ctx, trenutnaLinija);
+            } else if (situacija.tip_situacije === "gol" && prikaziKvadrat) {
+                drawSquare(ctx, situacija.lopta[1]);
+            }
+        }
+
+        $('#prev-btn').click(function() {
+            if (trenutnaSituacija > 1) {
+                trenutnaSituacija--;
+                dohvatiSituaciju(trenutnaSituacija);
+            }
+        });
+
+        $('#next-btn').click(function() {
+            trenutnaSituacija++;
+            dohvatiSituaciju(trenutnaSituacija);
+        });
+
+        $('#vote-btn').click(function() {
+            provjeraGlasanja(trenutnaSituacija, odluka);
+        });
+
+        $('#canvas').click(handleCanvasClick);
+
+        dohvatiSituaciju(trenutnaSituacija);
+    </script>
+</body>
+</html>
